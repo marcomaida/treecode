@@ -23,8 +23,8 @@ def full_tree (layers, max_branches):
 		cs = [full_tree(layers-1, max_branches) for _ in range(max_branches)]
 		return TreeNode(cs)
 
-def max_layers(tree):
-	return 1 + max([max_layers(c) for c in tree.children], default=0)
+def max_layers(t):
+	return 1 + max([max_layers(c) for c in t.children], default=0)
 
 def rightmost(layers):
 	assert layers > 0
