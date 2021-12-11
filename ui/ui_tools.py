@@ -25,7 +25,7 @@ def destroy_canvas():
 def draw_tree(img, tree, thickness, color=TREE_COLOR):
 	for child in tree.children:
 		cv.line(img, tree.position_cv(),child.position_cv(),color, thickness)
-		draw_tree(img, child, max(1,int(thickness//2)),color)
+		draw_tree(img, child, max(1,int(thickness/1)),color)
 
 def draw_text(img, position, text, color = (0,0,0), scale = 1):
 	font = cv.FONT_HERSHEY_SIMPLEX

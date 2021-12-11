@@ -35,3 +35,10 @@ def rightmost(layers):
 	
 def one():
 	return rightmost(2)
+
+def n_branches(node):
+	branches = 0
+	for c in node.children:
+		branches += 1 + n_branches(c)
+	
+	return branches

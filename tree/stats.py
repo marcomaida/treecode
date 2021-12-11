@@ -13,9 +13,10 @@ qr = {
 "QR_V25" : 117**2,
 "QR_V40 (biggest)" : 177**2 }
 
-def treegrowth(max_branches_per_fork, l, fork_types = 1):
+def number_of_trees(max_branches_per_fork, l, fork_types = 1):
     assert max_branches_per_fork > 1
     assert l > 0
+    if l == 1: return 1
     r = max_branches_per_fork
     for _ in range(l-2):
         new_r = 1
@@ -30,7 +31,7 @@ def evaluate_ranges():
     print(f"Max {max_branches_per_fork} max branches per fork allowed.\n")
 
     for i in range(1, 11):
-        trees = treegrowth(max_branches_per_fork, i)
+        trees = number_of_trees(max_branches_per_fork, i)
         bits = math.log2(trees)
 
         # Check QR code capacity

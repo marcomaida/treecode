@@ -23,7 +23,7 @@ def run(img):
 				tools.draw_tree(img, t, 25)
 				
 				# Drawing statistics
-				tree_count = stats.treegrowth(b, l, f)
+				tree_count = stats.number_of_trees(b, l, f)
 				bits = int(math.log2(tree_count))
 				tree_count = tools.big_number_label(tree_count)
 				branches = tools.big_number_label(b**l)
