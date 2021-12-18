@@ -18,3 +18,18 @@ def layout_tree_fractal(t, position, height, spread = (PI/9), direction = Vector
 		child_pos = child_pos.rotate(position, angle)
 		child_dir = (child_pos - position).getNormalized()
 		layout_tree_fractal(t.children[i], child_pos, height, spread*.95, child_dir, current_layer+1)
+
+def lt_wetherell_shannon_line(t, position, branch_len, offsets, spread, direction, current_layer, nexts):
+		t.position = Vector(0,0)
+		if current_layer in nexts: 
+			t.position.x = nexts[current_layer]
+			nexts[current_layer] += spread
+		else:
+			t.position.x = position.x+offsets[current_layer]
+			nexts[current_layer] = t.position.x+spread
+
+		t.position.y = position.y + direction.y * current_layer * branch_len
+
+		for c in t.children:
+			lt_wetherell_shannon_line(c, position,branch_len*.95, offsets, spread, direction, current_layer+1, nexts)
+	

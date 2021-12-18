@@ -42,3 +42,14 @@ def n_branches(node):
 		branches += 1 + n_branches(c)
 	
 	return branches
+
+def per_layer_breadth(node, per_layer, layer=0):
+	if node is None: return
+	else:
+		if layer in per_layer:
+			per_layer[layer]+= 1
+		else:	
+			per_layer[layer] = 0
+			
+		for c in node.children:
+			per_layer_breadth(c, per_layer, layer+1)
