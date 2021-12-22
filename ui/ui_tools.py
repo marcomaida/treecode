@@ -3,6 +3,8 @@ from tree import stats
 import math
 import numpy as np
 
+from util.vector import Vector
+
 TREE_COLOR = (0,0,0)
 LESS_COLOR = (0,0,90)
 MORE_COLOR = (0,90,0)
@@ -24,8 +26,18 @@ def destroy_canvas():
 
 def draw_tree(img, tree, thickness, color=TREE_COLOR):
 	for child in tree.children:
-		cv.line(img, tree.position_cv(),child.position_cv(),color, thickness)
+		cv.line(img, tree.pos_cv(),child.pos_cv(),color, thickness)
 		draw_tree(img, child, max(1,int(thickness/1)),color)
+
+def cvp(vec):
+	return [int(vec.x), int(vec.y)]
+
+def draw_polygon(img, polygon, thickness=10, color=TREE_COLOR):
+	n = len(polygon.vertices)
+	for i in range(n):
+		cv.line(img, cvp(polygon.vertices[i]), 
+					 cvp(polygon.vertices[(i+1)%n]), 
+					 color, thickness)
 
 def draw_text(img, position, text, color = (0,0,0), scale = 1):
 	font = cv.FONT_HERSHEY_SIMPLEX

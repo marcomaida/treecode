@@ -7,9 +7,20 @@ class TreeNode:
 	def __init__(self, children = [], position = Vector(0,0)):
 		self.children = children 
 		self.position = position
+		self.n_descendants = None
 
-	def position_cv(self):
+	def pos_cv(self):
 		return (int(self.position.x), int(self.position.y))
+
+	def _compute_descendants(self):
+		self.n_descendants = sum([c._compute_descendants() 
+								  for c in self.children], 
+								  0) + 1
+		return self.n_descendants
+	
+	def initialize(self):
+		# compute metadata in each this node and children
+		self._compute_descendants()
 
 	def __repr__(self) -> str:
 		return f" {len(self.children)} > {str(self.children)}"

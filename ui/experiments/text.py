@@ -7,7 +7,6 @@ from ui import ui_tools as tools
 from util.vector import Vector
 from util import bit_stream as bsn
 from tree import tree, layout, converter
-import math
 
 def run(img):
 	auto = False
@@ -25,7 +24,7 @@ def run(img):
 		plbr = {}
 		tree.per_layer_breadth(t, plbr)
 		br = max (plbr.values())
-		layout.layout_tree_fractal (t, tree_position, branch_size, 1.5, Vector(0,-1))
+		layout.layout_tree_fractal_weighted (t, t.n_descendants, tree_position, branch_size, 2, Vector(0,-1))
 		
 		x_width = 20
 		offsets = [-x_width * plbr[i]//2 + br*i/ml for i in range(ml)]

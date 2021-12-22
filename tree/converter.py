@@ -83,4 +83,5 @@ def bits_to_tree(stream): #TODO replace with proper stream
             frontier.append(c)
         father.children = children
     
+    root.initialize()
     return root
