@@ -19,7 +19,7 @@ def run(img):
 				tree_position = Vector(tools.canvasX/2,tools.canvasY*.5) 
 				t = tree.full_tree(l,b) 
 				layout.layout_tree_fractal (t, tree_position, tools.canvasY*.25)
-				cv.circle(img, t.pos_cv(), 50, tools.TREE_COLOR, 15)
+				tools.draw_circle(img, t.position, 50)
 				tools.draw_tree(img, t, 25)
 				
 				# Drawing statistics

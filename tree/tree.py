@@ -9,9 +9,6 @@ class TreeNode:
 		self.position = position
 		self.n_descendants = None
 
-	def pos_cv(self):
-		return (int(self.position.x), int(self.position.y))
-
 	def _compute_descendants(self):
 		self.n_descendants = sum([c._compute_descendants() 
 								  for c in self.children], 

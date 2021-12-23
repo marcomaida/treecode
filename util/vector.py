@@ -10,6 +10,8 @@ __status__ = "Production"
 from random import *
 from math import *
 
+TOL = 0.000001
+
 class Vector:
 	def __init__(self, x=0, y=0):
 		self.x = 0
@@ -211,12 +213,14 @@ class Vector:
 	
 	def __eq__(self, other):
 		if isinstance(other, Vector):
-			return self.x == other.x and self.y == other.y
+			return isclose(self.x, other.x, abs_tol=TOL) and \
+				   isclose(self.y, other.y, abs_tol=TOL)
 		else:
 			return NotImplemented
+	
 	def __ne__(self, other):
 		if isinstance(other, Vector):
-			return self.x != other.x or self.y != other.y
+			return not self == other
 		else:
 			return NotImplemented
 	def __gt__(self, other):
@@ -240,11 +244,6 @@ class Vector:
 		else:
 			return NotImplemented
 	
-	def __eq__(self, other):
-		if isinstance(other, Vector):
-			return self.x == other.x and self.y == other.y
-		else:
-			return NotImplemented
 	
 	def __len__(self):
 		return int(sqrt(self.x**2 + self.y**2))
