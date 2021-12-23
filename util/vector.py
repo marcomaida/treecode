@@ -12,6 +12,9 @@ from math import *
 
 TOL = 0.000001
 
+def vec(v): # new copy of vector
+	return Vector(v.x, v.y)
+
 class Vector:
 	def __init__(self, x=0, y=0):
 		self.x = 0

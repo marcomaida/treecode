@@ -6,9 +6,10 @@ from util.geometry import Segment
 
 from util.vector import Vector
 
-TREE_COLOR = (0,0,0)
-LESS_COLOR = (0,0,120)
-MORE_COLOR = (0,90,0)
+BLACK = (0,0,0)
+RED = (0,0,120)
+GREEN = (0,90,0)
+ORANGE = (25, 175, 255)
 
 canvasX = 3200
 canvasY = 1600
@@ -28,7 +29,7 @@ def destroy_canvas():
 def cvp(vec):
 	return [int(vec.x), int(vec.y)]
 
-def draw_segment(img, seg, thickness, color=TREE_COLOR):
+def draw_segment(img, seg, thickness, color=BLACK):
 	if seg.is_line: 
 		# Not really a bulletproof approach but I am lazy 
 		# and this is just for debugging
@@ -41,18 +42,18 @@ def draw_segment(img, seg, thickness, color=TREE_COLOR):
 
 	cv.line(img, cvp(p1),cvp(p2), color, thickness)
 
-def draw_tree(img, tree, thickness, color=TREE_COLOR):
+def draw_tree(img, tree, thickness, color=BLACK):
 	for child in tree.children:
 		draw_segment(img, Segment(tree.position, child.position), thickness, color)
 		draw_tree(img, child, max(1,int(thickness/1)),color)
 
-def draw_polygon(img, polygon, thickness=10, color=TREE_COLOR):
+def draw_polygon(img, polygon, thickness=10, color=BLACK):
 	n = len(polygon.vertices)
 	for i in range(n):
 		draw_segment(img, Segment(polygon.vertices[i],polygon.vertices[(i+1)%n]), 
 					 	  thickness, color)
 
-def draw_circle(img, center, radius, thickness=10, color=TREE_COLOR):
+def draw_circle(img, center, radius, thickness=10, color=BLACK):
 	cv.circle(img, cvp(center), radius, color, thickness) 
 
 def draw_text(img, position, text, color = (0,0,0), scale = 1):
@@ -72,6 +73,6 @@ def draw_qr_comparison(img, canvasX, canvasY, bits):
     for name, qr_bits in stats.qr.items():
         is_more = bits > qr_bits
         comp = ">" if is_more else "<"
-        color = MORE_COLOR if is_more else LESS_COLOR
+        color = GREEN if is_more else RED
         img = draw_text(img, (50,y), f"{comp} {name} : {qr_bits//8} bytes", color)
         y += 50
