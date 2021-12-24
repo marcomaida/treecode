@@ -4,7 +4,7 @@ Enumerates all the trees, starting from one
 
 import cv2 as cv
 from ui import ui_tools as tools
-from util.vector import Vector
+from util.vector import Vector,vec
 from util import bit_stream as bsn, geometry
 from tree import tree, layout, poly_layout, converter
 
@@ -29,7 +29,7 @@ def run(img):
 		tree.per_layer_breadth(t, plbr)
 		br = max (plbr.values())
 		layout.layout_tree_fractal_weighted (t, t.n_descendants, tree_position, branch_size, 2, Vector(0,-1))
-		poly_layout.layout(t, circle, 0)
+		poly_layout.layout(t, circle, vec(circle.vertices[0]))
 		x_width = 20
 		offsets = [-x_width * plbr[i]//2 + br*i/ml for i in range(ml)]
 		nexts = {}

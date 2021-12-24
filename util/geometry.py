@@ -1,4 +1,5 @@
 from warnings import simplefilter
+from tree.tree import n_branches
 import util.vector
 from util.vector import vec
 from util.vector import Vector
@@ -20,6 +21,14 @@ class Polygon:
     def centroid(self):
         return sum(self.vertices, start=Vector(0,0))/len(self.vertices)
 
+    def area(self):
+        a = 0
+        ox,oy = self.vertices[0].x, self.vertices[0].y
+        for v in self.vertices[1:]+[self.vertices[0]]:
+            a += (v.x*oy-v.y*ox)
+            ox,oy = v.x,v.y
+        return a/2
+
     def segment(self, i):
         assert i < len(self.vertices)
         return Segment(self.vertices[i], self.vertices[(i+1)%len(self.vertices)])
@@ -37,7 +46,7 @@ class Polygon:
         
         if len(intersections) < 2:
             return None, None
-            
+
         if len(intersections) > 2: # removing duplicate intersections in case on cut on vertex
             uniq_its =[]
             for its in intersections:
@@ -64,8 +73,10 @@ class Polygon:
         return Polygon(l_vs), Polygon(r_vs)
     
     @staticmethod
-    def circle(center, radius, n_edges):
-        vs = [Vector(math.cos(a), math.sin(a))*radius + center for a in np.linspace(math.pi/2.,-math.pi*3/2, n_edges, endpoint=False)]
+    def circle(center, radius, n_vertices):
+        assert n_vertices > 2
+
+        vs = [Vector(math.cos(a), math.sin(a))*radius + center for a in np.linspace(math.pi/2.,-math.pi*3/2, n_vertices, endpoint=False)]
         return Polygon(vs)
 
 class Segment:

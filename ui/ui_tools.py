@@ -3,7 +3,6 @@ from tree import stats
 import math
 import numpy as np
 from util.geometry import Segment
-
 from util.vector import Vector
 
 BLACK = (0,0,0)
@@ -61,6 +60,12 @@ def draw_text(img, position, text, color = (0,0,0), scale = 1):
 	fontScale = scale
 	thickness = 2*scale
 	return cv.putText(img, text, position, font, fontScale, color, thickness, cv.LINE_AA)
+
+def draw_text_list(img, position, texts, color=BLACK, scale=1, distance=70):
+	for i,text in enumerate(texts):
+		tpos = position.y + i * distance
+		img = draw_text(img, (position.x,tpos), text, scale)
+	return img
 	
 def big_number_label(num):
 	if num > 10**5: 
