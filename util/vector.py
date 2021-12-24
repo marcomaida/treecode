@@ -52,10 +52,18 @@ class Vector:
 	@staticmethod
 	def angle(v1, v2):
 	  return acos(v1.dotproduct(v2) / (v1.getLength() * v2.getLength()))
+	
+	@staticmethod
+	def signed_angle(v1,v2):
+		return atan2( v1.x*v2.y - v1.y*v2.x, v1.x*v2.x + v1.y*v2.y )
 
 	@staticmethod
 	def angleDeg(v1, v2):
 	  return Vector.angle(v1,v2) * 180.0 / pi
+	
+	@staticmethod
+	def lerp(v1, v2, t):
+	  return v2*t + v1*(1-t)
 	
 	def set(self, x,y):
 		self.x = x
@@ -263,3 +271,5 @@ class Vector:
 	def __repr__(self): return "{'x': %(x)f, 'y': %(y)f}" % self
 
 	def __neg__(self): return Vector(-self.x, -self.y)
+
+ZERO = Vector(0,0)

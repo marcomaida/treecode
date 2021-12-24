@@ -1,4 +1,5 @@
 from warnings import simplefilter
+from tree.layout import PI
 from tree.tree import n_branches
 import util.vector
 from util.vector import vec
@@ -9,6 +10,9 @@ TOL=util.vector.TOL # Tolerance for two numbers considereded equal
 
 def geq(n1,n2):
     return math.isclose(n1,n2, abs_tol=TOL)
+
+def seg(segment):
+    return Segment(vec(segment.p1), vec(segment.p2), segment.is_line)
 
 class Polygon:
     def __init__(self, vertices):
@@ -33,11 +37,17 @@ class Polygon:
         assert i < len(self.vertices)
         return Segment(self.vertices[i], self.vertices[(i+1)%len(self.vertices)])
 
+    def has_on_perimeter(self, point):
+        return any([point in self.segment(i) for i in range(len(self.vertices))])
+
     def translate(self, vec):
         for v in self.vertices:
             v += vec
 
     def cut(self, line):
+        # Returns the left and right subpolygons after the 
+        # polygon has been cut by the given line. If the line 
+        # does not intersect, returns (None, None)
         assert line.is_line
 
         intersections = [(i, line.intersection(self.segment(i))) 
@@ -70,8 +80,71 @@ class Polygon:
         s2 = [Vector(v) for v in self.vertices]
         r_vs = [vec(i1[1]), vec(i2[1])] + s2[i2[0]+1:] + s2[:i1[0]+1]
 
-        return Polygon(l_vs), Polygon(r_vs)
-    
+        # Finally, make sure that lsec is actually on the left
+        lsec = Polygon(l_vs)
+        rsec = Polygon(r_vs)
+        lvr = [line.has_at_right(v) for v in lsec.vertices 
+                                    if v != i1[1] and v != i2[1]]
+        rvr = [line.has_at_right(v) for v in rsec.vertices
+                                    if v != i1[1] and v != i2[1]]
+        l_at_right = all(lvr)
+        r_at_right = all(rvr)
+        assert l_at_right or r_at_right # at least one should be at right
+        if l_at_right and not r_at_right:
+            lsec, rsec = rsec, lsec
+            # It's a complicated matter, as in some edge cases they could
+            # both be at right, as has_at_right is inclusive. 
+            # Imagine a polygon with zero area which is
+            # basically a line. In such case I would expect the code to
+            # fail before, but let's handle the case
+
+        return lsec, rsec
+
+    def cut_area_percentage(self, line, max_angle, lsec_perc):
+        # Returns a cut in which subsections have area perc, 1-perc.
+        # The line can be rotated from 0 to max_angle.
+        # It is assumed that increasing the angle increases the area
+        # It is assumed that the line points inwards in the polygon, 
+        # So that the cut with angle 0 is a valid cut.
+        # Only works on convex polygons
+        assert line.is_line
+        assert self.has_on_perimeter(line.p1)
+        assert 0 <= max_angle <= 2*PI
+
+        lsec,_ = self.cut(line)
+        assert lsec is not None # Angle 0 must be a valid cut
+
+        return self._cut_area_percentage(line, 0, max_angle, lsec_perc)
+
+    def _cut_area_percentage(self, line, mina, maxa, lsec_perc):
+        trot = (mina + maxa) / 2
+        rot_line = seg(line)
+        rot_line.rotate(trot)
+
+        lsec,rsec = self.cut(rot_line)
+
+        if lsec is None:
+            if geq(mina,maxa): 
+                assert False # Should never get here
+            else:
+                # Assuming that going over the area means that the angle was too
+                # big. May fail if the line does not point to the inside of 
+                # the polygon. This is checked in the wrapper function
+                return self.cut_area_percentage(line, mina, trot, lsec_perc)
+
+        lsec_area = lsec.area()
+        tot_area = self.area()
+        perc = lsec_area / tot_area
+        if geq(perc, lsec_perc):
+            return lsec, rsec
+        elif geq(mina,maxa):
+            # There is no solution :(
+            return None, None
+        elif perc < lsec_perc:
+            return self.cut_area_percentage(line, trot, maxa, lsec_perc)
+        else:
+            return self.cut_area_percentage(line, mina, trot, lsec_perc)
+
     @staticmethod
     def circle(center, radius, n_vertices):
         assert n_vertices > 2
@@ -105,7 +178,21 @@ class Segment:
 
     def translate(self, vec):
         self.p1 +=vec
-        self.p2 +=vec
+        self.p2 +=vec    
+        
+    def rotate(self, radiants):
+        # rotates p2 around p1
+        self.p2 = self.p2.rotate(self.p1, radiants)
+
+    def has_at_right(self, point):
+        dir = self.p2 - self.p1 # center in zero
+        p = point - self.p1
+        sangle = Vector.signed_angle(dir, p) 
+        return sangle >= 0
+
+    def set_length(self, length):
+        # Moves p2 to reach the requested length
+        self.p2 = (self.p2 - self.p1).getNormalized()*length + self.p1
 
     def intersection(self, line):
         x1,y1 = self.p1.x, self.p1.y
