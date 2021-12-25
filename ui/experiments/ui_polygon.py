@@ -3,10 +3,11 @@ Enumerates all the trees, starting from one
 """
 
 import cv2 as cv
+from tree.layouts import layout, poly_layout
 from ui import ui_tools as tools
 from util.vector import Vector,vec
 from util import bit_stream as bsn, geometry
-from tree import tree, layout, poly_layout, converter
+from tree import tree, converter
 
 def run(img):
 	auto = False
@@ -18,7 +19,7 @@ def run(img):
 	circle_center = Vector(tools.canvasX*.5, tools.canvasY*.5)
 	circle_radius = tools.canvasY*.4
 	circle = geometry.Polygon.circle(circle_center, circle_radius, 20)
-
+	circle.squash(0,.4)
 	while True:
 		img = tools.clean_canvas()
 
@@ -28,11 +29,12 @@ def run(img):
 		plbr = {}
 		tree.per_layer_breadth(t, plbr)
 		br = max (plbr.values())
-		layout.layout_tree_fractal_weighted (t, t.n_descendants, tree_position, branch_size, 2, Vector(0,-1))
-		poly_layout.layout(t, circle, vec(circle.vertices[0]))
+		#layout.layout_tree_fractal_weighted (t, t.n_descendants, tree_position, branch_size, 2, Vector(0,-1))
+		#poly_layout.layout(t, circle, vec(circle.vertices[0]))
 		x_width = 20
 		offsets = [-x_width * plbr[i]//2 + br*i/ml for i in range(ml)]
 		nexts = {}
+		layout.lt_wetherell_shannon_line (t, tree_position, tools.canvasY*.07,offsets, x_width, Vector(0,-1),0,nexts)
 		
 		tools.draw_tree(img, t, 2)
 		tools.draw_circle(img, t.position, 20, 10)

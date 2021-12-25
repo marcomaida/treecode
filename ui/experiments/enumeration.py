@@ -3,10 +3,11 @@ Enumerates all the trees, starting from one
 """
 
 import cv2 as cv
+from tree.layouts import layout
 from ui import ui_tools as tools
 from util.vector import Vector
 from util import bit_stream as bsn
-from tree import tree, layout, stats, converter
+from tree import tree, stats, converter
 import math
 
 def run(img):

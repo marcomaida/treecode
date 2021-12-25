@@ -3,9 +3,10 @@ Shows the full, worst-case trees with a varying number of layers, max branches a
 """
 
 import cv2 as cv
+from tree.layouts import layout
 from ui import ui_tools as tools
 from util.vector import Vector
-from tree import tree, layout, stats
+from tree import tree, stats
 import math
 
 CONTENT = "This text can be encoded in a tree with this worst case using Unicode (2 byte/character)."

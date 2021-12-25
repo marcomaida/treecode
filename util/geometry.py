@@ -1,5 +1,5 @@
 from warnings import simplefilter
-from tree.layout import PI
+from tree.layouts.layout import PI
 from tree.tree import n_branches
 import util.vector
 from util.vector import vec
@@ -55,6 +55,33 @@ class Polygon:
     def translate(self, vec):
         for v in self.vertices:
             v += vec
+    
+    def squash(self, xsquash, ysquash):
+        centroid = self.centroid()
+        for v in self.vertices:
+            v.x = v.x * (1-xsquash) + centroid.x * xsquash
+            v.y = v.y * (1-ysquash) + centroid.y * ysquash
+
+    def closest_vertex_to_point_on_perimeter(self, point, left_allowed, right_allowed):
+        # Gets the closest vertex to the point.
+        # Left and right are considered w.r.t. the centroid of the polygon.
+        # Note: Vertices equal to the point are excluded
+        cut_line = Segment(point, self.centroid())
+        ss = [self.segment(i) for i in range(len(self.vertices))
+                                    if point in self.segment(i)]
+        cv = None # closest vertex on the left
+        vs = [v for s in ss for v in (s.p1, s.p2)]
+        for v in vs:
+            at_right = cut_line.has_at_right(v)
+            dir_ok = right_allowed and at_right
+            dir_ok |= left_allowed and not at_right
+            dir_ok &= point != v # exclude same points
+            if (dir_ok and (cv == None or 
+                            Vector.distance(point, v) <
+                            Vector.distance(point, cv))):
+                cv = v
+
+        return cv
 
     def cut(self, line):
         # Returns the left and right subpolygons after the 
