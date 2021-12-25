@@ -8,16 +8,23 @@ class TreeNode:
 		self.children = children 
 		self.position = position
 		self.n_descendants = None
+		self.max_depth = None
 
 	def _compute_descendants(self):
 		self.n_descendants = sum([c._compute_descendants() 
 								  for c in self.children], 
 								  0) + 1
 		return self.n_descendants
+		
+	def _compute_depth(self):
+		self.max_depth = max([c._compute_depth() 
+							  for c in self.children], default=0) + 1
+		return self.max_depth
 	
 	def initialize(self):
 		# compute metadata in each this node and children
 		self._compute_descendants()
+		self._compute_depth()
 
 	def __repr__(self) -> str:
 		return f" {len(self.children)} > {str(self.children)}"

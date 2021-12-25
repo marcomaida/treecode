@@ -80,6 +80,18 @@ def run(img):
         tools.draw_segment(img, ps2, 5, tools.GREEN)
 
         #################################
+        # Area cut
+        #################################
+
+        base_pos = Vector.lerp(circle.vertices[0], circle.vertices[1], .5)
+        cut_line = geometry.Segment(base_pos, vec(circle.vertices[0]), True)
+        cut_line.rotate(.01)
+        lsec2_area = random.uniform(0.01,.999)
+        lsec2,rsec2 = circle.cut_area_percentage(cut_line, PI, lsec2_area)
+        tools.draw_polygon(img, lsec2, 5, tools.ORANGE)
+        tools.draw_polygon(img, rsec2, 5, tools.ORANGE)
+
+        #################################
         # Text info 
         #################################
 
@@ -88,6 +100,7 @@ def run(img):
         infos += [f"Radius: {circle_radius:.2f}"]
         side_length = (circle.vertices[1]-circle.vertices[0]).getLength()
         infos += [f"Side length: {side_length:.2f}"]
+        infos += [f"Yellow area-based cut: {lsec2_area:.2f}"]
         if lsec is not None:
             infos += [f"Area lsec: {lsec.area():.2f}"]
             infos += [f"Area rsec: {rsec.area():.2f}"]
@@ -108,6 +121,8 @@ def run(img):
         #################################
         # Extra checks 
         #################################
+        actual_area_perc = lsec2.area()/circle.area()
+        assert geometry.geq(actual_area_perc, lsec2_area)
         assert s1.has_at_right(ps1.p2)
         assert (not s1.has_at_right(ps2.p2)) or s1.p1 == ps2.p2
 
@@ -119,7 +134,7 @@ def run(img):
             assert i1 in l1
             assert i1 in l2
             assert i1 != i1 + Vector(0,0.0001)
-            assert i1 == i1 + Vector(0.0000000001,0.000000000001)
+            assert i1 == i1 + Vector(0.0000000001,0.000000000001) # geq
         if i2 is not None: 
             assert i2 in l1 
             assert i2 in l2

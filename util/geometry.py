@@ -6,10 +6,13 @@ from util.vector import vec
 from util.vector import Vector
 import math, numpy as np
 
-TOL=util.vector.TOL # Tolerance for two numbers considereded equal
+TOL=util.vector.TOL # Tolerance for two numbers considered equal
 
-def geq(n1,n2):
-    return math.isclose(n1,n2, abs_tol=TOL)
+def geq(n1,n2, abs_tol=TOL):
+    return math.isclose(n1,n2, abs_tol=abs_tol)
+    
+def gleq(n1,n2, abs_tol=TOL):
+    return n1 <= n2 or geq (n1, n2)
 
 def seg(segment):
     return Segment(vec(segment.p1), vec(segment.p2), segment.is_line)
@@ -17,6 +20,14 @@ def seg(segment):
 class Polygon:
     def __init__(self, vertices):
         self.vertices = vertices
+
+        assert vertices is not None 
+        assert len(vertices) > 2
+        
+        # No duplicates allowed
+        for i,v1 in enumerate(vertices):
+            for j,v2 in enumerate(vertices):
+                assert i == j or v1 != v2
 
     def __str__(self):
         return str(self.vertices)
@@ -35,7 +46,8 @@ class Polygon:
 
     def segment(self, i):
         assert i < len(self.vertices)
-        return Segment(self.vertices[i], self.vertices[(i+1)%len(self.vertices)])
+        return Segment(vec(self.vertices[i]), 
+                       vec(self.vertices[(i+1)%len(self.vertices)]))
 
     def has_on_perimeter(self, point):
         return any([point in self.segment(i) for i in range(len(self.vertices))])
@@ -68,6 +80,9 @@ class Polygon:
                     uniq_its.append(its)
             intersections = uniq_its
 
+        if len(intersections) != 2:
+            return None, None
+
         assert len(intersections) == 2
 
         i1,i2 = (intersections[0], intersections[1])  # in the form (vertex index, intersection) 
@@ -79,6 +94,16 @@ class Polygon:
 
         s2 = [Vector(v) for v in self.vertices]
         r_vs = [vec(i1[1]), vec(i2[1])] + s2[i2[0]+1:] + s2[:i1[0]+1]
+
+        assert len(l_vs) > 2       
+        assert len(r_vs) > 2   
+
+        # Removing duplicates (edge case in which intersection = vertex)
+        l_vs = [v for i,v in enumerate(l_vs[1:]+[l_vs[0]], 1) if v != l_vs[i-1]]
+        r_vs = [v for i,v in enumerate(r_vs[1:]+[r_vs[0]], 1) if v != r_vs[i-1]]
+
+        if len(l_vs) < 2 or len(r_vs) < 2:
+            return None, None  # edge case in which cutting line is tangent
 
         # Finally, make sure that lsec is actually on the left
         lsec = Polygon(l_vs)
@@ -130,20 +155,20 @@ class Polygon:
                 # Assuming that going over the area means that the angle was too
                 # big. May fail if the line does not point to the inside of 
                 # the polygon. This is checked in the wrapper function
-                return self.cut_area_percentage(line, mina, trot, lsec_perc)
+                return self._cut_area_percentage(line, mina, trot, lsec_perc)
 
-        lsec_area = lsec.area()
+        lsec2_area = lsec.area()
         tot_area = self.area()
-        perc = lsec_area / tot_area
+        perc = lsec2_area / tot_area
         if geq(perc, lsec_perc):
             return lsec, rsec
-        elif geq(mina,maxa):
-            # There is no solution :(
-            return None, None
+        elif geq(mina, maxa):
+            # There is exact solution :(
+            return lsec, rsec
         elif perc < lsec_perc:
-            return self.cut_area_percentage(line, trot, maxa, lsec_perc)
+            return self._cut_area_percentage(line, trot, maxa, lsec_perc)
         else:
-            return self.cut_area_percentage(line, mina, trot, lsec_perc)
+            return self._cut_area_percentage(line, mina, trot, lsec_perc)
 
     @staticmethod
     def circle(center, radius, n_vertices):
@@ -168,13 +193,18 @@ class Segment:
         x3,y3 = vec.x, vec.y
 
         if geq(x1,x2): # vertical line
-            return geq(x2,x3) and (self.is_line or (y1 <= y3 <= y2 or y1 >= y3 >= y2))
+            return geq(x2,x3) and (self.is_line 
+                              or (gleq (y1,y3) and gleq(y3,y2)) 
+                              or (gleq (y2,y3) and gleq(y3,y1)) )
         if geq(y1,y2): # horizontal line
-            return geq(y2,y3) and (self.is_line or (x1 <= x3 <= x2 or x1 >= x3 >= x2))
+            return geq(y2,y3) and (self.is_line 
+                              or (gleq (x1,x3) and gleq(x3,x2)) 
+                              or (gleq (x2,x3) and gleq(x3,x1)) )
 
         tx = (x3-x2)/(x1-x2)
         ty = (y3-y2)/(y1-y2)
-        return geq(tx, ty) and (self.is_line or (0 <= tx <= 1))
+
+        return geq(tx, ty) and (self.is_line or (gleq(0,tx) and gleq(tx, 1)))
 
     def translate(self, vec):
         self.p1 +=vec

@@ -115,7 +115,7 @@ class Vector:
 	def __rsub__(self, other):
 		if isinstance(other, Vector):
 			return Vector(other.x - self.x, other.y - self.y)
-		elif  isinstance(other, tuple) or isinstance(other, list):
+		elif isinstance(other, tuple) or isinstance(other, list):
 			return Vector(other[0] - self.x, other[1] - self.y)
 		elif isinstance(other, int) or isinstance(other, float):
 			return Vector(other - self.x, other - self.y)

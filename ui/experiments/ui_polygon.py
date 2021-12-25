@@ -11,12 +11,12 @@ from tree import tree, layout, poly_layout, converter
 def run(img):
 	auto = False
 	t = tree.one()
-	text = "Trees are beautiful, and so are you."
+	text = "Tree"#Trees are beautiful, and so are you."
 	tree_position = Vector(tools.canvasX/2,tools.canvasY*.8) 
 	branch_size = tools.canvasY*.07
 	tree_speed = tools.canvasX*.01
 	circle_center = Vector(tools.canvasX*.5, tools.canvasY*.5)
-	circle_radius = tools.canvasY*.3
+	circle_radius = tools.canvasY*.4
 	circle = geometry.Polygon.circle(circle_center, circle_radius, 20)
 
 	while True:
@@ -34,7 +34,9 @@ def run(img):
 		offsets = [-x_width * plbr[i]//2 + br*i/ml for i in range(ml)]
 		nexts = {}
 		
-		tools.draw_tree(img, t, 1)
+		tools.draw_tree(img, t, 2)
+		tools.draw_circle(img, t.position, 20, 10)
+		tools.draw_circle(img, t.position, 5, 10)
 		tools.draw_polygon(img, circle)
 
 		# Extra data
