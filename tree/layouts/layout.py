@@ -1,6 +1,7 @@
 import math
 
 from tree import tree
+from tree.layouts import buchheim_layout as buchheim
 from util.vector import Vector
 
 PI = math.pi
@@ -69,3 +70,9 @@ def lt_wetherell_shannon_line(t, position, branch_len, offsets, spread, directio
 		for c in t.children:
 			lt_wetherell_shannon_line(c, position,branch_len*.95, offsets, spread, direction, current_layer+1, nexts)
 	
+def lt_buchheim(t, position):
+	dt = buchheim.buchheim(t)
+	unitX = 7
+	unitY = 30
+	root_pos = Vector(dt.x*unitX, -dt.y*unitY)
+	dt.transfer(unitX, unitY, position-root_pos)

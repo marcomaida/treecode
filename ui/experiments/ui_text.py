@@ -25,12 +25,14 @@ def run(img):
 		plbr = {}
 		tree.per_layer_breadth(t, plbr)
 		br = max (plbr.values())
-		layout.layout_tree_fractal_weighted (t, t.n_descendants, tree_position, branch_size, 2, Vector(0,-1))
+		#layout.layout_tree_fractal_weighted (t, t.n_descendants, tree_position, branch_size, 2, Vector(0,-1))
 		
-		x_width = 20
-		offsets = [-x_width * plbr[i]//2 + br*i/ml for i in range(ml)]
-		nexts = {}
+		#x_width = 20
+		#offsets = [-x_width * plbr[i]//2 + br*i/ml for i in range(ml)]
+		#nexts = {}
 		#layout.lt_wetherell_shannon_line (t, tree_position, tools.canvasY*.07,offsets, x_width, Vector(0,-1),0,nexts)
+
+		layout.lt_buchheim(t, tree_position)
 		
 		
 		tools.draw_tree(img, t, 1)

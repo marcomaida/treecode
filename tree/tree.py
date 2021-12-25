@@ -9,6 +9,7 @@ class TreeNode:
 		self.position = position
 		self.n_descendants = None
 		self.max_depth = None
+		self.father_thickness = 1
 
 	def _compute_descendants(self):
 		self.n_descendants = sum([c._compute_descendants() 

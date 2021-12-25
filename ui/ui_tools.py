@@ -43,7 +43,8 @@ def draw_segment(img, seg, thickness, color=BLACK):
 
 def draw_tree(img, tree, thickness, color=BLACK):
 	for child in tree.children:
-		draw_segment(img, Segment(tree.position, child.position), thickness, color)
+		draw_segment(img, Segment(tree.position, child.position), 
+					 child.father_thickness, color)
 		draw_tree(img, child, max(1,int(thickness/1)),color)
 
 def draw_polygon(img, polygon, thickness=10, color=BLACK):
