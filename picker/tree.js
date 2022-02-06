@@ -1,4 +1,4 @@
-import { rectangle } from "./geometry";
+import { rectangle } from "./geometry.js";
 
 export class TreeNode {
     constructor(children=[]) {
@@ -13,7 +13,7 @@ export class TreeNode {
   
 export class Tree {
     constructor(root, thickness = 10) {
-      this.root = new TreeNode();
+      this.root = root;
     }
 
     makeMesh(node, vertices=[], per_layer=[], depth=0){
