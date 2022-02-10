@@ -5,8 +5,8 @@ from ui import ui_tools as tools
 def run():
     img = tools.create_canvas()
     #worst_case_capacity.run(img)
-    #ui_text.run(img)
+    ui_text.run(img)
     #ui_polygon.run(img)
     #ui_geometry_debug.run(img)
     #tools.destroy_canvas()
-    ui_graph_tool.run()
+    #ui_graph_tool.run()
