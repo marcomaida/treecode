@@ -1,4 +1,5 @@
-import { TreeNode, Tree } from "../tree/tree.js"
+import { Tree } from "../tree/tree.js"
+import { TreeNode } from "../tree/tree_node.js";
 
 export function bitsToTree(stream) {
     var root = new TreeNode(null);
