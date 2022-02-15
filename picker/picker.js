@@ -11,12 +11,17 @@ var stream = new BitStreamText("Hello world!")
 var t = bitsToTree(stream)
 layout_wetherell_shannon(t)
 
-const app = new PIXI.Application()
+const app = new PIXI.Application({
+    width: window.innerWidth,
+    height: window.innerHeight,
+    resolution: 1
+})
+
 document.body.appendChild(app.view)
 const geometry = new PIXI.Geometry()
                     .addAttribute('aVertexPosition', t.mesh)
 const mesh = new PIXI.Mesh(geometry, getShader())
-mesh.position.set(100, 500)
+mesh.position.set(100, window.innerHeight-50)
 app.stage.addChild(mesh)
 
 // app.ticker.add((delta) => {

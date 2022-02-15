@@ -15,10 +15,28 @@ export class TreeNode {
 
       const thickness = this.tree.specs.thicknessAt(this)
       
-      //if (this.father === null) {
-        const left = this.position.add(new PIXI.Vector(thickness/2))
-        const right = left.clone().add(new PIXI.Vector(thickness))
-      //}
+      // TODO handle the fact that picking the two points like this
+      // does not define thickness, which has to be instead defined
+      // before computing the ending points. 
+      var left, right = null
+      if (this.father === null) {
+        left = this.position.add(new PIXI.Vector(thickness/2, 0))
+        right = left.clone().add(new PIXI.Vector(thickness, 0))
+      }
+      else {
+        right = pos.clone()
+                   .sub(this.father.position)
+                   .normalize()
+                   .multiplyScalar(thickness/2)
+                   .rotate(Math.PI/2)
+        left = right.clone().rotate(-Math.PI)
+
+        left.add(pos)
+        right.add(pos)
+      }
+      // left = this.position.add(new PIXI.Vector(thickness/2, 0))
+      // right = left.clone().add(new PIXI.Vector(thickness, 0))
+      
 
       for (const vi of this.vertices_left) {
         this.tree.mesh[vi] = left.x
