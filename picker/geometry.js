@@ -6,17 +6,9 @@ export function rectangleMesh(from, to, thickness) {
             .multiplyScalar(thickness/2)
             .rotate(Math.PI/2)
 
-    const b = a.clone()
-                 .rotate(-Math.PI/2)
-
-    const c = from.clone()
-    .sub(to)
-    .normalize()
-    .multiplyScalar(thickness/2)
-    .rotate(Math.PI/2)
-     
-    const d = c.clone()
-                .rotate(-Math.PI/2)
+    const b = a.clone().rotate(-Math.PI)
+    const c = b.clone()
+    const d = a.clone()
 
     a.add(from)
     b.add(from)
