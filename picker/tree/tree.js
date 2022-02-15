@@ -1,9 +1,20 @@
-import { rectangleMesh } from "./geometry.js";
+import { rectangleMesh } from "../geometry/geometry.js";
+import { TreeSpecs } from "./tree_specs.js";
 
 export class TreeNode {
-    constructor(children=[]) {
+    constructor(father, children=[]) {
+      this.father = father
       this.children = children;
-      this.verticesIndex = -1;
+      this.vertices = [];
+      this.position = 0
+    }
+
+    setPosition(pos, mesh){
+      this.position = pos
+      for (const vi of this.vertices) {
+        mesh[vi] = pos.x
+        mesh[vi+1] = pos.y
+      }
     }
   
     get isLeaf() {
@@ -12,10 +23,9 @@ export class TreeNode {
   }
   
 export class Tree {
-    constructor(root, thickness = 5, branch_length = 20) {
+    constructor(root) {
       this.root = root
-      this.thickness = thickness
-      this.branch_length = branch_length
+      this.specs = new TreeSpecs()
 
       var vertices = []
       this.makeMesh(this.root, vertices)
@@ -34,18 +44,18 @@ export class Tree {
       if (depth !== 0) {
         if (per_layer.length <= depth) {
           const new_point = per_layer[depth-1].clone()
-                                              .add(new PIXI.Vector(0, -this.branch_length))
+                                              .add(new PIXI.Vector(0, -this.specs.branch_length))
                                              // .setX(0)
           per_layer.push(new_point)
         }
 
-        vertices.push(...rectangleMesh(per_layer[depth-1], per_layer[depth], this.thickness))
+        vertices.push(...rectangleMesh(per_layer[depth-1], per_layer[depth], this.specs.thickness))
 
         for (const c of node.children){
           this.makeMesh(c, vertices, per_layer, depth+1)
         }
 
-        per_layer[depth].add(new PIXI.Vector(this.branch_length, 0))
+        per_layer[depth].add(new PIXI.Vector(this.specs.branch_length, 0))
       }
       else {
         per_layer = [new PIXI.Vector(0, 0)]

@@ -1,7 +1,7 @@
-import { TreeNode, Tree } from "./tree.js"
+import { TreeNode, Tree } from "../tree/tree.js"
 
 export function bitsToTree(stream) {
-    var root = new TreeNode();
+    var root = new TreeNode(null);
     var frontier = [root];
     var iter = stream.getStream()
     for (var bit of iter) { 
@@ -14,9 +14,9 @@ export function bitsToTree(stream) {
                 bit = iter.next(); // father will have children, a 1 has been processed
         }
 
-        var children = [new TreeNode(), new TreeNode()];
+        var children = [new TreeNode(father), new TreeNode(father)];
         if (bit == 1) 
-            children.push(new TreeNode());
+            children.push(new TreeNode(father));
 
         for (const c of children)
             frontier.push(c);

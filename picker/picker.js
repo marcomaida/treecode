@@ -1,8 +1,8 @@
-import {getShader} from "./drawing.js"
-import {bitsToTree} from "./converter.js"
-import {BitStreamText} from "./bit_stream.js"
-import {} from "./vector.js"
-import { rectangleMesh } from "./geometry.js";
+import {getShader} from "./drawing/drawing.js"
+import {bitsToTree} from "./conversion/converter.js"
+import {BitStreamText} from "./conversion/bit_stream.js"
+import {} from "./geometry/vector.js"
+import { rectangleMesh } from "./geometry/geometry.js";
 
 
 var stream = new BitStreamText("Hello world!")
