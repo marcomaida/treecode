@@ -21,9 +21,14 @@ document.body.appendChild(app.view)
 const geometry = new PIXI.Geometry()
                     .addAttribute('aVertexPosition', t.mesh)
 const mesh = new PIXI.Mesh(geometry, getShader())
+const buffer = mesh.geometry.getBuffer('aVertexPosition');
 mesh.position.set(100, window.innerHeight-50)
 app.stage.addChild(mesh)
+t.mesh = buffer.data
 
-// app.ticker.add((delta) => {
-//     triangle.rotation += 0.01
-// })
+const base = t.root.children[2].position
+app.ticker.add((delta) => {
+    var seconds = new Date().getTime() / 1000
+    t.root.children[2].setPosition(base.clone().add(new PIXI.Vector(Math.cos(seconds*3)*50,Math.sin(seconds*3)*50)))
+    buffer.update()
+})

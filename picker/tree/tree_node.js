@@ -28,8 +28,8 @@ export class TreeNode {
                    .sub(this.father.position)
                    .normalize()
                    .multiplyScalar(thickness/2)
-                   .rotate(Math.PI/2)
-        left = right.clone().rotate(-Math.PI)
+                   .perpendicular(false)
+        left = right.clone().multiplyScalar(-1)
 
         left.add(pos)
         right.add(pos)

@@ -147,3 +147,17 @@ PIXI.Vector.prototype.rotate = function(theta) {
     this.y = xtemp * Math.sin(theta) + this.y * Math.cos(theta);
     return this;
 };
+
+PIXI.Vector.prototype.perpendicular = function(clockwise) {
+    var xtemp = this.x;
+    if (clockwise) {
+        this.x = this.y 
+        this.y = -xtemp 
+    }
+    else {
+        this.x = -this.y 
+        this.y = xtemp 
+    }
+    
+    return this;
+};
