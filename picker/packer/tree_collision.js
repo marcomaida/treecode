@@ -1,6 +1,18 @@
 import { doPolygonsIntersect } from "../geometry/geometry.js"
 
-const MIN_ANGLE = 30     / 360 * (2 * Math.PI) // Degrees
+const MIN_ANGLE = 20     / 360 * (2 * Math.PI) // Degrees
+
+export function isBranchAreaIntersectingTree(node) {
+    if (isBranchIntersectingSubtree(node, node.tree.root))
+        return true
+
+    for (const c of node.children) {
+        if (isBranchIntersectingSubtree(c, node.tree.root))
+        return true
+    }
+
+    return false
+}
 
 export function isBranchIntersectingTree(node) {
     return isBranchIntersectingSubtree(node, node.tree.root)

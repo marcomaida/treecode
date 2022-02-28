@@ -80,3 +80,21 @@ export function doPolygonsIntersect (a, b) {
     }
     return true;
 };
+
+export function centroid(polygon) {
+    const centroid = new PIXI.Vector(0,0)
+
+    for (const point of polygon)
+        centroid.add(point)
+
+    centroid.multiplyScalar(1/polygon.length)
+    
+    return centroid
+}
+
+export function scalePolygon(polygon, scale) {
+    const centr = centroid(polygon)
+
+    for (const point of polygon)
+        point.sub(centr).multiplyScalar(scale).add(centr)
+}

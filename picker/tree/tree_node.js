@@ -1,3 +1,7 @@
+import { scalePolygon } from "../geometry/geometry.js";
+
+const COLLIDER_SCALE = 1.5
+
 export class TreeNode {
     constructor(father, children=[]) {
       this.father = father
@@ -63,6 +67,8 @@ export class TreeNode {
         this.colliderPolygon = [father_polygon[n-1].clone(), 
                                 father_polygon[n-2].clone(), 
                                 left, right]
+
+        scalePolygon(this.colliderPolygon, COLLIDER_SCALE)
       }
     }
     
