@@ -27,12 +27,11 @@ export function rectangleMesh(from, to, thickness) {
  * @param b an array of connected points [{x:, y:}, {x:, y:},...] that form a closed polygon
  * @return true if there is any intersection between the 2 polygons, false otherwise
  */
-function doPolygonsIntersect (a, b) {
+export function doPolygonsIntersect (a, b) {
     var polygons = [a, b];
     var minA, maxA, projected, i, i1, j, minB, maxB;
 
     for (i = 0; i < polygons.length; i++) {
-
         // for each polygon, look at each edge of the polygon, and determine if it separates
         // the two shapes
         var polygon = polygons[i];
@@ -51,10 +50,10 @@ function doPolygonsIntersect (a, b) {
             // and keep track of the min and max of these values
             for (j = 0; j < a.length; j++) {
                 projected = normal.x * a[j].x + normal.y * a[j].y;
-                if (isUndefined(minA) || projected < minA) {
+                if (minA === undefined || projected < minA) {
                     minA = projected;
                 }
-                if (isUndefined(maxA) || projected > maxA) {
+                if (maxA === undefined || projected > maxA) {
                     maxA = projected;
                 }
             }
@@ -64,10 +63,10 @@ function doPolygonsIntersect (a, b) {
             minB = maxB = undefined;
             for (j = 0; j < b.length; j++) {
                 projected = normal.x * b[j].x + normal.y * b[j].y;
-                if (isUndefined(minB) || projected < minB) {
+                if (minB === undefined|| projected < minB) {
                     minB = projected;
                 }
-                if (isUndefined(maxB) || projected > maxB) {
+                if (maxB === undefined || projected > maxB) {
                     maxB = projected;
                 }
             }
@@ -75,7 +74,6 @@ function doPolygonsIntersect (a, b) {
             // if there is no overlap between the projects, the edge we are looking at separates the two
             // polygons, and we know there is no overlap
             if (maxA < minB || maxB < minA) {
-                CONSOLE("polygons don't intersect!");
                 return false;
             }
         }

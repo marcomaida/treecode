@@ -148,6 +148,15 @@ PIXI.Vector.prototype.rotate = function(theta) {
     return this;
 };
 
+PIXI.Vector.prototype.angle = function(v) {
+    var a1 = this.rad()
+    var a2 = v.rad()
+    var sign = a1 > a2 ? 1 : -1;
+    var angle = a1 - a2;
+    var K = -sign * Math.PI * 2;
+    return (Math.abs(K + angle) < Math.abs(angle))? K + angle : angle;
+}
+
 PIXI.Vector.prototype.perpendicular = function(clockwise) {
     var xtemp = this.x;
     if (clockwise) {
@@ -158,6 +167,5 @@ PIXI.Vector.prototype.perpendicular = function(clockwise) {
         this.x = -this.y 
         this.y = xtemp 
     }
-    
     return this;
 };

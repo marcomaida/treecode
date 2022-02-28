@@ -13,9 +13,9 @@ export class Tree {
       var num = 1
       for (const c of node.children){
         this.initialize_nodes(c)
-        num += c.num_descendants
+        num += c.numDescendants
       }
-      node.num_descendants = num
+      node.numDescendants = num
       node.tree = this
     }
   }

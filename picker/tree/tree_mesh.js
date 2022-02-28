@@ -1,6 +1,6 @@
 
 export function create_tree_mesh(tree) {
-    tree.mesh = Array((tree.root.num_descendants-1) * 12).fill(0) // each branch has 2 triangles, so 12 coordinates
+    tree.mesh = Array((tree.root.numDescendants-1) * 12).fill(0) // each branch has 2 triangles, so 12 coordinates
     initialize_nodes_mesh(tree.root)
 }
 
