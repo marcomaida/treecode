@@ -29,14 +29,14 @@ export class Packer {
 
                 var dir = new PIXI.Vector((Math.random()-0.5)*2, (Math.random()-0.5)*2)
                 dir.multiplyScalar(this.speed)
-                dir.add(node.father.position.clone().sub(oldPos).normalize().multiplyScalar(this.speed/1.5))
+                dir.add(node.father.position.clone().sub(oldPos).normalize().multiplyScalar(this.speed/1.9))
 
                 const newPos = oldPos.clone().add(dir)
                 node.setPosition(newPos)
                 
                 if (! this.isAcceptable(node)) {
                     node.setPosition(oldPos)
-                    this.speed += .1
+                    //this.speed += .1
                     tries --
 
                     if (tries <= 0)
@@ -44,7 +44,7 @@ export class Packer {
                 }
                 else {
                     done = true
-                    this.speed = Math.max(this.speed - 3, this.initial_speed)
+                    //this.speed = Math.max(this.speed - 3, this.initial_speed)
                 }
             }
         }
