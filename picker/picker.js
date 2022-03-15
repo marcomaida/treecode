@@ -37,7 +37,7 @@ var base = node.position.clone()
 app.ticker.add((delta) => {
     //var seconds = new Date().getTime() / 1000
     //t.root.children[0].setPosition(base.clone().add(new PIXI.Vector(Math.cos(seconds/2)*50,Math.sin(seconds/2)*50)))
-    packer.tick(10)
+    packer.tick(20)
     i += 1
 
     if (i % 10000 == 0)
