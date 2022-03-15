@@ -1,4 +1,5 @@
 import { scalePolygon } from "../geometry/geometry.js";
+import { jointVertices, vertexToVec } from "./tree_mesh.js";
 
 const COLLIDER_SCALE = 1.5
 
@@ -7,10 +8,14 @@ export class TreeNode {
       this.father = father
       this.children = children;
       this.numDescendants = 0
-      this.vertices_left = []
-      this.vertices_right = []
+
+      this.vertices_start_left  = []
+      this.vertices_start_right = []
+      this.vertices_end_left    = []
+      this.vertices_end_right   = []
+
       this.colliderPolygon = null
-      this.position = 0
+      this.position = new PIXI.Vector(0,0)
       this.tree = null
     }
 
@@ -19,56 +24,32 @@ export class TreeNode {
       this.position = pos.clone()
 
       const thickness = this.tree.specs.thicknessAt(this)
-      
-      // TODO handle the fact that picking the two points like this
-      // does not define thickness, which has to be instead defined
-      // before computing the ending points. 
-      var left, right = null
-      if (this.father === null) {
-        left = this.position.clone().add(new PIXI.Vector(thickness/2, 0))
-        right = left.clone().add(new PIXI.Vector(thickness, 0))
+    
+      // Setting this branch position
+      if (this.father !== null)
+      {
+        jointVertices(this.father.position, this.position, thickness, this.vertices_start_left, this.vertices_start_right, this.tree.mesh)
+        jointVertices(this.position, this.father.position, thickness, this.vertices_end_right, this.vertices_end_left, this.tree.mesh)
       }
-      else {
-        right = pos.clone()
-                   .sub(this.father.position)
-                   .normalize()
-                   .multiplyScalar(thickness/2)
-                   .perpendicular(false)
-        left = right.clone().multiplyScalar(-1)
+      else
+        jointVertices(this.position, new PIXI.Vector(0,0), thickness, this.vertices_end_right, this.vertices_end_left, this.tree.mesh)
 
-        left.add(pos)
-        right.add(pos)
-      }
-      
-      // left = this.position.add(new PIXI.Vector(thickness/2, 0))
-      // right = left.clone().add(new PIXI.Vector(thickness, 0))
-
-      for (const vi of this.vertices_left) {
-        this.tree.mesh[vi] = left.x
-        this.tree.mesh[vi+1] = left.y
-      }
-      for (const vi of this.vertices_right) {
-        this.tree.mesh[vi] = right.x
-        this.tree.mesh[vi+1] = right.y
-      }
+      // Setting this children branch position
+      for (const c of this.children)
+        jointVertices(this.position, c.position, thickness, c.vertices_start_left, c.vertices_start_right, this.tree.mesh)
 
       if (this.father === null) {
-        this.colliderPolygon = [left, right]
+        this.colliderPolygon = []
       }
       else {
-        const father_polygon = this.father.colliderPolygon
-        const n = father_polygon.length
+        // Building collider from mesh, a bit dirty
+        const sl = vertexToVec(this.vertices_start_left[0],this.tree.mesh)
+        const sr = vertexToVec(this.vertices_start_right[0],this.tree.mesh)
+        const el = vertexToVec(this.vertices_end_left[0],this.tree.mesh)
+        const er = vertexToVec(this.vertices_end_right[0],this.tree.mesh)
+        this.colliderPolygon = [sl,sr,er,el]
 
-        if (this.direction.angle(this.father.direction) > Math.PI/2)
-          [left, right] = [right, left] // if angle is greater than 90 degrees, swap left and right (draw to understand)
-
-        // Expects the father collider to have the last two elements as
-        // the points of the children's collider
-        this.colliderPolygon = [father_polygon[n-1].clone(), 
-                                father_polygon[n-2].clone(), 
-                                left, right]
-
-        scalePolygon(this.colliderPolygon, COLLIDER_SCALE)
+        //scalePolygon(this.colliderPolygon, COLLIDER_SCALE)
       }
     }
     

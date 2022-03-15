@@ -1,7 +1,7 @@
 export class TreeSpecs {
     constructor() {
-        this.max_thickness = 15
-        this.min_thickness = 3
+        this.max_thickness = 10
+        this.min_thickness = 10
         this.branch_length = 35
     }
 
