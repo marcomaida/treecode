@@ -1,7 +1,7 @@
 import {} from "../geometry/vector.js"
 import {} from "../geometry/math.js"
 import { clearDebug, drawPolygon, drawCircle, initDebug } from "../drawing/debug.js"
-import { doPolygonsIntersect } from "../geometry/geometry.js"
+import { coatPolygon, doPolygonsIntersect } from "../geometry/geometry.js"
 
 const app = new PIXI.Application({
     width: window.innerWidth,
@@ -39,12 +39,14 @@ app.ticker.add((delta) => {
     drawPolygon(p1, color)
     drawPolygon(p2, color)
 
-    var speed = 10
+    var speed = 2
     var d1t = d1.clone().multiplyScalar(delta * speed)
     var d2t = d2.clone().multiplyScalar(delta * speed)
 
-    p1.map(p=> p.add(d1t))
+    //p1.map(p=> p.add(d1t))
     p2.map(p=> p.add(d2t))
+
+    coatPolygon(p1, 1)
     //p1.map(p=> p.add(new PIXI.Vector((Math.random()-0.5)*10, (Math.random()-0.5)*10)))
     //p2.map(p=> p.add(new PIXI.Vector((Math.random()-0.5)*10, (Math.random()-0.5)*10)))
 

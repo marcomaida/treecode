@@ -1,5 +1,6 @@
 import { isBranchAreaIntersectingTree } from "./tree_collision.js"
 
+const MIN_BRANCH_LENGTH = 30
 export class Packer {
     constructor(tree) {
       this.tree = tree
@@ -55,7 +56,14 @@ export class Packer {
     isAcceptable(node) {
         var tooShort = false
         if (node.father !== null)
-            tooShort = node.position.distanceTo(node.father.position) < 30
+            tooShort = node.position.distanceTo(node.father.position) < MIN_BRANCH_LENGTH
+
+        for (const c of node.children) {
+            if (tooShort) 
+                break
+                
+            tooShort = node.position.distanceTo(c.position) < MIN_BRANCH_LENGTH
+        }
         
         return !tooShort && !isBranchAreaIntersectingTree(node)
     }

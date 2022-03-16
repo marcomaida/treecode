@@ -1,7 +1,7 @@
-import { scalePolygon } from "../geometry/geometry.js";
-import { jointVertices, vertexToVec } from "./tree_mesh.js";
+import { coatPolygon, scalePolygon } from "../geometry/geometry.js";
+import { drawJoint, jointVertices, vertexToVec } from "./tree_mesh.js";
 
-const COLLIDER_SCALE = 1.5
+const COLLIDER_COATING = 5
 
 export class TreeNode {
     constructor(father, children=[]) {
@@ -13,6 +13,7 @@ export class TreeNode {
       this.vertices_start_right = []
       this.vertices_end_left    = []
       this.vertices_end_right   = []
+      this.vertices_joint = 0
 
       this.colliderPolygon = null
       this.position = new PIXI.Vector(0,0)
@@ -38,6 +39,8 @@ export class TreeNode {
       for (const c of this.children)
         jointVertices(this.position, c.position, thickness, c.vertices_start_left, c.vertices_start_right, this.tree.mesh)
 
+      drawJoint(this)
+
       if (this.father === null) {
         this.colliderPolygon = []
       }
@@ -49,7 +52,7 @@ export class TreeNode {
         const er = vertexToVec(this.vertices_end_right[0],this.tree.mesh)
         this.colliderPolygon = [sl,sr,er,el]
 
-        scalePolygon(this.colliderPolygon, COLLIDER_SCALE)
+        coatPolygon(this.colliderPolygon, COLLIDER_COATING)
       }
     }
     

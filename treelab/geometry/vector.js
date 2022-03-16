@@ -130,7 +130,7 @@ PIXI.Vector.prototype.lerp = function(v, alpha) {
 };
 
 PIXI.Vector.prototype.rad = function() {
-    return Math.atan2(this.x, this.y);
+    return Math.atan2(this.y, this.x);
 };
 
 PIXI.Vector.prototype.deg = function() {

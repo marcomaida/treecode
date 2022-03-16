@@ -98,3 +98,18 @@ export function scalePolygon(polygon, scale) {
     for (const point of polygon)
         point.sub(centr).multiplyScalar(scale).add(centr)
 }
+
+//TODO probably not working for any angle, but only for 90 degrees
+//Clearly fixable with some effort
+export function coatPolygon(polygon, coating) {
+    for (const [i, point] of polygon.entries()) {
+        const prev = i != 0 ? polygon[i-1] : polygon[polygon.length - 1]
+        const next = i < polygon.length - 1 ? polygon[i+1] : polygon[0]
+
+        const lprev = point.clone().sub(prev).normalize()
+        const lnext = point.clone().sub(next).normalize()
+
+        lprev.add(lnext).normalize().multiplyScalar(coating)
+        point.add(lprev)
+    }
+}

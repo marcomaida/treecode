@@ -47,10 +47,9 @@ app.ticker.add((delta) => {
     //     {
     //         var s = 2
     //         for (var vec of c.colliderPolygon) { 
-    //             drawRegularPolygon(t.transformPosition(vec).add(new PIXI.Vector(40,40)), 4, s)
+    //             drawRegularPolygon(t.transformPosition(vec), 4, s)
     //             s += 1
     //         }
     //     }
-    
     //console.log(isBranchIntersectingTree(t.root.children[2].children[2].children[1]))
 })
