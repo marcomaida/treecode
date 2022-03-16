@@ -4,8 +4,9 @@ import {} from "../geometry/vector.js"
 import {} from "../geometry/math.js"
 import { layout_wetherell_shannon } from "../tree/tree_layout.js";
 import { Packer } from "../packer/tree_packer.js"
-import { clearDebug, drawCircle, initDebug } from "../drawing/debug.js"
+import { clearDebug, drawCircle, drawRegularPolygon, initDebug } from "../drawing/debug.js"
 import { treeIterator } from "../tree/tree.js"
+import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 
 var stream = new BitStreamText("Hello world!")
 var t = bitsToTree(stream)
@@ -39,13 +40,17 @@ app.ticker.add((delta) => {
     if (i % 10000 == 0)
         layout_wetherell_shannon(t)
 
+    
     t.buffer.update()
-    clearDebug()
-    for (var c of treeIterator(t))
-    {
-        for (var vec of c.colliderPolygon)
-            drawCircle(t.transformPosition(vec), 4)
-    }
+    // if  (i < 10)
+    //     for (var c of treeIterator(t))
+    //     {
+    //         var s = 2
+    //         for (var vec of c.colliderPolygon) { 
+    //             drawRegularPolygon(t.transformPosition(vec).add(new PIXI.Vector(40,40)), 4, s)
+    //             s += 1
+    //         }
+    //     }
     
     //console.log(isBranchIntersectingTree(t.root.children[2].children[2].children[1]))
 })
