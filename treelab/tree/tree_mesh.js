@@ -1,4 +1,4 @@
-const NUM_JOINT_SEGMENTS = 10
+const NUM_JOINT_SEGMENTS = 5
 
 export function create_tree_mesh(tree) {
     const branches_size = (tree.root.numDescendants-1) * 12
