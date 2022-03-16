@@ -26,7 +26,7 @@ layout_wetherell_shannon(t)
 var i = 0
 var packer = new Packer(t)
 
-var node = t.root.children[2].children[2]
+//var node = t.root.children[2].children[2]
 //var base = node.position.clone()
 
 //const base = t.root.position
