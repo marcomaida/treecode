@@ -49,7 +49,7 @@ export class TreeNode {
         const er = vertexToVec(this.vertices_end_right[0],this.tree.mesh)
         this.colliderPolygon = [sl,sr,er,el]
 
-        //scalePolygon(this.colliderPolygon, COLLIDER_SCALE)
+        scalePolygon(this.colliderPolygon, COLLIDER_SCALE)
       }
     }
     

@@ -39,8 +39,9 @@ export class Packer {
                     //this.speed += .1
                     tries --
 
-                    if (tries <= 0)
-                        done = true
+                    if (tries <= 0) { 
+                        done = true 
+                    }
                 }
                 else {
                     done = true
@@ -55,7 +56,7 @@ export class Packer {
         var tooShort = false
         if (node.father !== null)
             tooShort = node.position.distanceTo(node.father.position) < 30
-
+        
         return !tooShort && !isBranchAreaIntersectingTree(node)
     }
 }

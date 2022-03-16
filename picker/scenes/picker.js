@@ -1,13 +1,11 @@
-import {getShader} from "./drawing/drawing.js"
-import {bitsToTree} from "./conversion/converter.js"
-import {BitStreamText} from "./conversion/bit_stream.js"
-import {} from "./geometry/vector.js"
-import {} from "./geometry/math.js"
-import { layout_wetherell_shannon } from "./tree/tree_layout.js";
-import { isBranchIntersectingTree } from "./packer/tree_collision.js"
-import { Packer } from "./packer/tree_packer.js"
-import { clearDebug, drawCircle, initDebug } from "./drawing/debug.js"
-import { treeIterator } from "./tree/tree.js"
+import {bitsToTree} from "../conversion/converter.js"
+import {BitStreamText} from "../conversion/bit_stream.js"
+import {} from "../geometry/vector.js"
+import {} from "../geometry/math.js"
+import { layout_wetherell_shannon } from "../tree/tree_layout.js";
+import { Packer } from "../packer/tree_packer.js"
+import { clearDebug, drawCircle, initDebug } from "../drawing/debug.js"
+import { treeIterator } from "../tree/tree.js"
 
 var stream = new BitStreamText("Hello world!")
 var t = bitsToTree(stream)
@@ -49,5 +47,5 @@ app.ticker.add((delta) => {
             drawCircle(t.transformPosition(vec), 4)
     }
     
-    //console.log(isBranchIntersectingTree(t.root.children[2].children[2]))
+    //console.log(isBranchIntersectingTree(t.root.children[2].children[2].children[1]))
 })
