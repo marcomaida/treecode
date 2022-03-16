@@ -5,7 +5,7 @@ export class Packer {
     constructor(tree) {
       this.tree = tree
       this.nodes = []
-      this.initial_speed = 10
+      this.initial_speed = 5
       this.speed = this.initial_speed
       this.init(tree.root)
     }

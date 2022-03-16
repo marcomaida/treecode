@@ -1,6 +1,8 @@
 import { Tree } from "../tree/tree.js"
 import { TreeNode } from "../tree/tree_node.js";
 
+const SEGMENTS = 1
+
 export function bitsToTree(stream) {
     var root = new TreeNode(null);
     var frontier = [root];
@@ -13,6 +15,11 @@ export function bitsToTree(stream) {
                 continue; // no child
             else 
                 bit = iter.next(); // father will have children, a 1 has been processed
+        }
+        
+        for (var i = 0; i < SEGMENTS-1; i ++) {
+            father.children = [new TreeNode(father)]
+            father = father.children[0]
         }
 
         var children = [new TreeNode(father), new TreeNode(father)];
