@@ -4,8 +4,9 @@ import { TreeNode } from "../tree/tree_node.js";
 const SEGMENTS = 1
 
 export function bitsToTree(stream) {
-    var root = new TreeNode(null);
-    var frontier = [root];
+    var root = new TreeNode(null)
+    root.children = [new TreeNode(root)]
+    var frontier = [root.children[0]];
     var iter = stream.getStream()
     for (var bit of iter) { 
         var father = frontier.shift();
