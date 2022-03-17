@@ -7,9 +7,11 @@ import { Packer } from "../packer/tree_packer.js"
 import { clearDebug, drawCircle, drawRegularPolygon, initDebug } from "../drawing/debug.js"
 import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
+import { TreeSpecs } from "../tree/tree_specs.js";
 
 var stream = new BitStreamText("Hello world!")
-var t = bitsToTree(stream)
+var specs = new TreeSpecs()
+var t = bitsToTree(stream, specs)
 
 const app = new PIXI.Application({
     width: window.innerWidth,
@@ -40,7 +42,6 @@ app.ticker.add((delta) => {
     if (i % 10000 == 0)
         layout_wetherell_shannon(t)
 
-    
     t.buffer.update()
     // if  (i < 10)
     //     for (var c of treeIterator(t))

@@ -2,9 +2,9 @@ import { getShader } from "../drawing/drawing.js";
 import { create_tree_mesh } from "./tree_mesh.js";
 import { TreeSpecs } from "./tree_specs.js";
 export class Tree {
-    constructor(root) {
+    constructor(root, specs) {
       this.root = root
-      this.specs = new TreeSpecs()
+      this.specs = specs
 
       this.mesh = null
       this.pixiMesh = null

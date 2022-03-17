@@ -1,8 +1,12 @@
 export class TreeSpecs {
     constructor() {
         this.max_thickness = 10
-        this.min_thickness = 5
+        this.min_thickness = 2
         this.branch_length = 35
+        this.num_segments = 1
+        this.collisionMinAngle = 20   / 360 * (2 * Math.PI) // Degrees
+        this.colliderCoating = 5
+        
     }
 
     thicknessAt(node) {

@@ -1,8 +1,5 @@
 import { coatPolygon, scalePolygon } from "../geometry/geometry.js";
 import { drawJoint, jointVertices, vertexToVec } from "./tree_mesh.js";
-
-const COLLIDER_COATING = 5
-
 export class TreeNode {
     constructor(father, children=[]) {
       this.father = father
@@ -58,7 +55,7 @@ export class TreeNode {
 
         this.colliderPolygon = [sl,sr,er,el]
 
-        coatPolygon(this.colliderPolygon, COLLIDER_COATING)
+        coatPolygon(this.colliderPolygon, this.tree.specs.colliderCoating)
       }
     }
     
