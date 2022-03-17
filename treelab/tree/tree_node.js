@@ -50,6 +50,12 @@ export class TreeNode {
         const sr = vertexToVec(this.vertices_start_right[0],this.tree.mesh)
         const el = vertexToVec(this.vertices_end_left[0],this.tree.mesh)
         const er = vertexToVec(this.vertices_end_right[0],this.tree.mesh)
+
+        // adding joint
+        const extra = this.direction.normalize().multiplyScalar(thickness/2)
+        el.add(extra)
+        er.add(extra)
+
         this.colliderPolygon = [sl,sr,er,el]
 
         coatPolygon(this.colliderPolygon, COLLIDER_COATING)
