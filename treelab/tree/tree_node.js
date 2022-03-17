@@ -29,7 +29,7 @@ export class TreeNode {
       // Setting this branch position
       if (this.father !== null)
       {
-        jointVertices(this.father.position, this.position, thickness, this.vertices_start_left, this.vertices_start_right, this.tree.mesh)
+        jointVertices(this.father.position, this.position, this.tree.specs.thicknessAt(this.father), this.vertices_start_left, this.vertices_start_right, this.tree.mesh)
         jointVertices(this.position, this.father.position, thickness, this.vertices_end_right, this.vertices_end_left, this.tree.mesh)
       }
       else
