@@ -6,7 +6,7 @@ export class TreeSpecs {
         this.num_segments = 1
         this.collisionMinAngle = 20   / 360 * (2 * Math.PI) // Degrees
         this.colliderCoating = 5
-        
+        this.minBranchLength = 30
     }
 
     thicknessAt(node) {
