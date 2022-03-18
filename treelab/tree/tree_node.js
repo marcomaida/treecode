@@ -66,6 +66,14 @@ export class TreeNode {
         return this.position.clone().sub(this.father.position)
     }
   
+    // relative to father
+    get relativePosition() {
+      if (this.father === null)
+        return this.position.clone()
+      else
+        return this.position.clone().sub(this.father.position)
+    }
+  
     get isLeaf() {
       return this.children.length === 0;
     }

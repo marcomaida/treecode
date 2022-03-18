@@ -42,14 +42,57 @@ function areBranchesIntersecting(nodea, nodeb) {
     const b_is_brother = nodea.father !== null && nodea.father.children.indexOf(nodeb) >= 0
 
     if (b_is_father || b_is_child || b_is_brother) {
+        // In case of neighbor node, we allow some intersection, as long as 
+        // the tips of the branches diverge enough considering their thickness
+
         // Use angle-check instead of collisions
-        var nodea_dir = nodea.direction
-        var nodeb_dir = nodeb.direction
+        // var nodea_dir = nodea.direction
+        // var nodeb_dir = nodeb.direction
 
-        if (b_is_father) nodeb_dir.multiplyScalar(-1)
-        if (b_is_child)  nodea_dir.multiplyScalar(-1)
+        var center = null
+        var tipa = null
+        var tipb = null
+        if (b_is_father) {
+            center = nodeb
+            tipa = nodea
+            tipb = nodeb.father
+        }
+        else if (b_is_child) {
+            center = nodea
+            tipa = nodea.father
+            tipb = nodeb
+        }
+        else { // brother
+            center = nodea.father
+            tipa = nodea
+            tipb = nodeb
+        }
 
-        return Math.abs(nodea_dir.angle(nodeb_dir)) < nodea.tree.specs.collisionMinAngle
+        const min_distance = Math.max(tipa.tree.specs.thicknessAt(tipa), 
+                                      tipb.tree.specs.thicknessAt(tipb)) * 2 + 3
+
+        var longer = null
+        var shorter = null
+
+        if (center.position.distanceToSq(tipa) < center.position.distanceToSq(tipb)) {
+            shorter = tipa.position
+            longer = tipb.position
+        }
+        else {
+            shorter = tipb.position
+            longer = tipa.position
+        }
+
+        longer = longer.clone()
+                        .sub(center.position)
+                        .normalize()
+                        .multiplyScalar(center.position.distanceTo(shorter))
+                        .add(center.position)
+
+        return shorter.distanceToSq(longer) < min_distance**2
+
+        // if (b_is_child)  nodea_dir.multiplyScalar(-1)
+        //return Math.abs(nodea_dir.angle(nodeb_dir)) < nodea.tree.specs.collisionMinAngle
     }
     else {
         console.assert(!b_is_brother && !b_is_child && !b_is_brother)
