@@ -1,6 +1,6 @@
 import {} from "../geometry/vector.js"
 import {} from "../geometry/math.js"
-import { clearDebug, drawPolygon, drawCircle, initDebug } from "../drawing/debug.js"
+import { clearDebug, drawDebugPolygon, drawDebugCircle, initDebug, drawDebugArrow } from "../drawing/debug.js"
 import { coatPolygon, doPolygonsIntersect } from "../geometry/geometry.js"
 
 const app = new PIXI.Application({
@@ -31,13 +31,14 @@ var d1 = new PIXI.Vector(1, 1)
 var d2 = new PIXI.Vector(-1, 1)
 
 app.ticker.add((delta) => {
-    //drawCircle(100, 40)
+    //drawDebugCircle(100, 40)
     clearDebug()
 
     const int = doPolygonsIntersect(p1, p2)
     const color =  int ? RED : GREEN
-    drawPolygon(p1, color)
-    drawPolygon(p2, color)
+    drawDebugPolygon(p1, color)
+    drawDebugPolygon(p2, color)
+    drawDebugArrow (p1[0], p2[0], 10, 0x2222AA)
 
     var speed = 2
     var d1t = d1.clone().multiplyScalar(delta * speed)
