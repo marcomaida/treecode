@@ -4,12 +4,12 @@ import {} from "../geometry/vector.js"
 import {} from "../geometry/math.js"
 import { layout_wetherell_shannon } from "../tree/tree_layout.js";
 import { Packer } from "../packer/tree_packer.js"
-import { clearDebug, drawCircle, drawRegularPolygon, initDebug } from "../drawing/debug.js"
+import { clearDebug, initDebug } from "../drawing/debug.js"
 import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
-var stream = new BitStreamText("Hello world!")
+var stream = new BitStreamText("Hello")//ello world!")
 var specs = new TreeSpecs()
 var t = bitsToTree(stream, specs)
 
@@ -48,7 +48,7 @@ app.ticker.add((delta) => {
     //     {
     //         var s = 2
     //         for (var vec of c.colliderPolygon) { 
-    //             drawRegularPolygon(t.transformPosition(vec), 4, s)
+    //             drawDebugRegularPolygon(t.transformPosition(vec), 4, s)
     //             s += 1
     //         }
     //     }

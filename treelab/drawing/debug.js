@@ -40,7 +40,7 @@ export function drawDebugRegularPolygon(center, radius, sides, color = DEBUG_COL
  *     |_|
  *    A   G
  */
-export function drawDebugArrow(start, end, thickness, color = DEBUG_COLOR) {
+export function drawDebugArrow(start, end, thickness = 3, color = DEBUG_COLOR) {
     const dir = end.clone().sub(start).normalize()
     const head_start = start.clone().lerp(end, .9)
 

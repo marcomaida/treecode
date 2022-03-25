@@ -157,6 +157,10 @@ PIXI.Vector.prototype.angle = function(v) {
     return (Math.abs(K + angle) < Math.abs(angle))? K + angle : angle;
 }
 
+PIXI.Vector.prototype.angleRelativeTo = function(v, center) {
+    return this.clone().sub(center).angle(v.clone().sub(center))
+}
+
 PIXI.Vector.prototype.perpendicular = function(clockwise) {
     var xtemp = this.x;
     if (clockwise) {

@@ -1,4 +1,5 @@
-import { springAngle, springNeighbors, springRandom } from "./springs.js"
+import { clearDebug, drawDebugArrow } from "../drawing/debug.js"
+import { springNeighborsDistance, springNeighborsAngle, springRandom } from "./springs.js"
 import { isBranchAreaIntersectingTree } from "./tree_collision.js"
 
 export class Packer {
@@ -35,9 +36,13 @@ export class Packer {
             const oldPos = node.position.clone()
 
             var dir = new PIXI.Vector(0,0)
-            dir.add(springNeighbors(node).multiplyScalar(this.speed))
-            dir.add(springRandom(node).multiplyScalar(this.speed))
-            dir.add(springAngle(node).multiplyScalar(this.speed))
+            dir.add(springNeighborsDistance(node).multiplyScalar(this.speed))
+            //dir.add(springRandom(node).multiplyScalar(this.speed))
+            dir.add(springNeighborsAngle(node).multiplyScalar(this.speed))
+
+            clearDebug()
+            drawDebugArrow(node.tree.transformPosition(node.position.clone()), 
+                           node.tree.transformPosition(node.position.clone()).add(dir))
 
             const newPos = oldPos.clone().add(dir)
             node.setPosition(newPos)
@@ -58,13 +63,13 @@ export class Packer {
     isAcceptable(node) {
         var tooShort = false
         if (node.father !== null)
-            tooShort = node.position.distanceTo(node.father.position) < node.tree.specs.minBranchLength
+            tooShort = node.position.distanceTo(node.father.position) < node.tree.specs.min_branch_length
 
         for (const c of node.children) {
             if (tooShort) 
                 break
                 
-            tooShort = node.position.distanceTo(c.position) < node.tree.specs.minBranchLength
+            tooShort = node.position.distanceTo(c.position) < node.tree.specs.min_branch_length
         }
         
         return !tooShort && !isBranchAreaIntersectingTree(node)
