@@ -19,7 +19,7 @@ export class Packer {
         }
     }
 
-    tick(steps) {
+    tick_many(steps) {
         for (var n = 0; n < steps; n++) {
             this.tick()
         }
@@ -31,32 +31,38 @@ export class Packer {
         const node = this.nodes[i]
 
         var done = false
-        var tries = 5
+        var tries = 3
+        var speed = this.speed
         while (! done) {
             const oldPos = node.position.clone()
 
             var dir = new PIXI.Vector(0,0)
-            dir.add(springNeighborsDistance(node).multiplyScalar(this.speed))
-            //dir.add(springRandom(node).multiplyScalar(this.speed))
-            dir.add(springNeighborsAngle(node).multiplyScalar(this.speed))
 
-            clearDebug()
-            drawDebugArrow(node.tree.transformPosition(node.position.clone()), 
-                           node.tree.transformPosition(node.position.clone()).add(dir))
+            if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
+            //dir.add(springRandom(node).multiplyScalar(this.speed))
+            if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
 
             const newPos = oldPos.clone().add(dir)
             node.setPosition(newPos)
             
-            if (! this.isAcceptable(node)) {
+            const acceptable = this.isAcceptable(node)
+            if (! acceptable) {
                 node.setPosition(oldPos)
                 //this.speed += .1
                 tries --
-
+                speed /= 2
                 if (tries <= 0) done = true 
             }
             else {
                 done = true
             }
+
+            clearDebug()
+            var color = (acceptable ? 0x22AA22 : 0xAA2222)
+            drawDebugArrow(node.tree.transformPosition(node.position.clone()), 
+                           node.tree.transformPosition(node.position.clone()).add(dir.clone().multiplyScalar(10)),
+                          3, color)
+
         }
     }
 
