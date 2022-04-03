@@ -5,6 +5,7 @@ export class TreeNode {
       this.father = father
       this.children = children;
       this.numDescendants = 0
+      this.label = null
 
       this.vertices_start_left  = []
       this.vertices_start_right = []
