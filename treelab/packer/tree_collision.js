@@ -39,7 +39,7 @@ function areBranchesIntersecting(nodea, nodeb) {
 
     const b_is_father = nodea.father === nodeb
     const b_is_child = nodea.children.indexOf(nodeb) >= 0
-    const b_is_brother = nodea.father !== null && nodea.father.children.indexOf(nodeb) >= 0
+    const b_is_brother = nodea.father !== null && nodea.father === nodeb.father
 
     if (b_is_father || b_is_child || b_is_brother) {
         // In case of neighbor node, we allow some intersection, as long as 
@@ -74,7 +74,8 @@ function areBranchesIntersecting(nodea, nodeb) {
         var longer = null
         var shorter = null
 
-        if (center.position.distanceToSq(tipa) < center.position.distanceToSq(tipb)) {
+        if (center.position.distanceToSq(tipa.position) < 
+            center.position.distanceToSq(tipb.position)) {
             shorter = tipa.position
             longer = tipb.position
         }
