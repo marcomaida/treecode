@@ -68,7 +68,7 @@ export function jointVertices(start, end, thickness, left_vertices, right_vertic
     var cpos = start.clone()
                     .add(dir)
 
-    for (const vi of left_vertices) {
+    for (const vi of right_vertices) {
         mesh[vi] = cpos.x
         mesh[vi+1] = cpos.y
     }
@@ -76,7 +76,7 @@ export function jointVertices(start, end, thickness, left_vertices, right_vertic
     dir.multiplyScalar(-2)
     cpos.add(dir)
 
-    for (const vi of right_vertices) {
+    for (const vi of left_vertices) {
         mesh[vi] = cpos.x
         mesh[vi+1] = cpos.y
     }

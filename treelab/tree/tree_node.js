@@ -45,8 +45,8 @@ export class TreeNode {
       }
       else {
         // Building collider from mesh, a bit dirty
-        const sr = vertexToVec(this.vertices_start_left[0],this.tree.mesh)
-        const sl = vertexToVec(this.vertices_start_right[0],this.tree.mesh)
+        const sl = vertexToVec(this.vertices_start_left[0],this.tree.mesh)
+        const sr = vertexToVec(this.vertices_start_right[0],this.tree.mesh)
         const el = vertexToVec(this.vertices_end_left[0],this.tree.mesh)
         const er = vertexToVec(this.vertices_end_right[0],this.tree.mesh)
 
@@ -55,7 +55,7 @@ export class TreeNode {
         el.add(extra)
         er.add(extra)
 
-        this.colliderPolygon = [sl,sr,er,el]
+        this.colliderPolygon = [sr,sl,er,el]
 
         //coatPolygon(this.colliderPolygon, this.tree.specs.colliderCoating)
       }
