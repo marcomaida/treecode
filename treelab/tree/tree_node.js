@@ -1,4 +1,3 @@
-import { drawDebugCircle } from "../drawing/debug.js";
 import { coatPolygon, scalePolygon } from "../geometry/geometry.js";
 import { drawJoint, jointVertices, vertexToVec } from "./tree_mesh.js";
 export class TreeNode {
@@ -35,10 +34,21 @@ export class TreeNode {
         jointVertices(this.position, new PIXI.Vector(0,0), thickness, this.vertices_end_right, this.vertices_end_left, this.tree.mesh)
 
       // Setting this children branch position
-      for (const c of this.children)
+      for (const c of this.children) {
         jointVertices(this.position, c.position, thickness, c.vertices_start_left, c.vertices_start_right, this.tree.mesh)
+        c.colliderFromMesh()
+        drawJoint(c)
+        //coatPolygon(c.colliderPolygon, c.tree.specs.colliderCoating)
+      }
 
+      this.colliderFromMesh()
       drawJoint(this)
+
+      //coatPolygon(this.colliderPolygon, this.tree.specs.colliderCoating)
+    }
+
+    colliderFromMesh() {
+      const thickness = this.tree.specs.thicknessAt(this)
 
       if (this.father === null) {
         this.colliderPolygon = []
@@ -56,9 +66,7 @@ export class TreeNode {
         er.add(extra)
 
         this.colliderPolygon = [sr,sl,er,el]
-
-        //coatPolygon(this.colliderPolygon, this.tree.specs.colliderCoating)
-      }
+      } 
     }
     
     get direction() {
