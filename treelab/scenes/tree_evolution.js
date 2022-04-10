@@ -9,7 +9,7 @@ import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
-var stream = new BitStreamText("Hello")//ello world!")
+var stream = new BitStreamText("Hello world!")//ello world!")
 var specs = new TreeSpecs()
 var t = bitsToTree(stream, specs)
 
@@ -36,7 +36,7 @@ var packer = new Packer(t)
 app.ticker.add((delta) => {
     //var seconds = new Date().getTime() / 1000
     //t.root.children[0].setPosition(base.clone().add(new PIXI.Vector(Math.cos(seconds/2)*50,Math.sin(seconds/2)*50)))
-    packer.tick_many(100)
+    packer.tick_many(1000)
     i += 1
 
     if (i % 10000 == 0)
