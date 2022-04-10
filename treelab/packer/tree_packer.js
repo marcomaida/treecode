@@ -57,12 +57,11 @@ export class Packer {
                 done = true
             }
 
-            clearDebug()
-            var color = (acceptable ? 0x22AA22 : 0xAA2222)
-            drawDebugArrow(node.tree.transformPosition(node.position.clone()), 
-                           node.tree.transformPosition(node.position.clone()).add(dir.clone().multiplyScalar(10)),
-                          3, color)
-
+            // clearDebug()
+            // var color = (acceptable ? 0x22AA22 : 0xAA2222)
+            // drawDebugArrow(node.tree.transformPosition(node.position.clone()), 
+            //                node.tree.transformPosition(node.position.clone()).add(dir.clone().multiplyScalar(10)),
+            //               3, color)
         }
     }
 
