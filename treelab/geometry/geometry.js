@@ -19,6 +19,19 @@ export function rectangleMesh(from, to, thickness) {
             a.x, a.y, c.x, c.y, d.x, d.y]
 }
 
+export function circlePolygon(center, radius, numSegments) {
+    const circle = Array(numSegments).fill(new PIXI.Vector(0,0))
+
+    for (var i = 0; i < numSegments; i ++) {
+        const angle = i / numSegments * 2 * Math.PI
+        circle[i] = new PIXI.Vector(Math.cos(angle)*radius,
+                                    Math.sin(angle)*radius)
+        circle[i].add(center)
+    }
+
+    return circle
+}
+
 /**
  * Helper function to determine whether there is an intersection between the two polygons described
  * by the lists of vertices. Uses the Separating Axis Theorem

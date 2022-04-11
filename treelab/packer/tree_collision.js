@@ -31,15 +31,20 @@ function isBranchIntersectingSubtree(node, curr_node) {
 }
 
 function areBranchesIntersecting(nodea, nodeb) {
-    if (nodea.father === null || nodeb.father === null)
-        return false
-
     if (nodea === nodeb)
         return true
 
     const b_is_father = nodea.father === nodeb
     const b_is_child = nodea.children.indexOf(nodeb) >= 0
     const b_is_brother = nodea.father !== null && nodea.father === nodeb.father
+
+    if (nodea.father === null || nodeb.father === null)
+    {// Checking collision with root
+        if (b_is_father || b_is_child)
+            return false
+        else
+            return doPolygonsIntersect(nodea.colliderPolygon, nodeb.colliderPolygon)
+    }
 
     if (b_is_father || b_is_child || b_is_brother) {
         // In case of neighbor node, we allow some intersection, as long as 

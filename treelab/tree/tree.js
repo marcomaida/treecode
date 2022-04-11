@@ -1,12 +1,17 @@
 import { getShader } from "../drawing/drawing.js";
-import { create_tree_mesh } from "./tree_mesh.js";
+import { circlePolygon } from "../geometry/geometry.js";
+import { create_tree_mesh, drawSeed, SEED_RING_OUTER_RADIUS } from "./tree_mesh.js";
 import { TreeSpecs } from "./tree_specs.js";
+
+const SEED_COLLIDER_SEGMENTS = 10
+
 export class Tree {
     constructor(root, specs) {
       this.root = root
       this.specs = specs
 
       this.mesh = null
+      this.seedPosition = null
       this.pixiMesh = null
       this.buffer = null
 
@@ -35,6 +40,13 @@ export class Tree {
       this.pixiMesh.position.set(window.innerWidth/2, window.innerHeight/2)
       app.stage.addChild(this.pixiMesh)
       this.mesh = this.buffer.data
+
+      drawSeed(this)
+    }
+
+    seedCollider() {
+      var r = SEED_RING_OUTER_RADIUS*1.2 //TODO more science, this is a random number
+      this.root.colliderPolygon = circlePolygon(this.root.position, r, SEED_COLLIDER_SEGMENTS)
     }
 
     transformPosition(vec) {

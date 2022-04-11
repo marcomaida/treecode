@@ -51,7 +51,7 @@ export class TreeNode {
       const thickness = this.tree.specs.thicknessAt(this)
 
       if (this.father === null) {
-        this.colliderPolygon = []
+        this.tree.seedCollider() 
       }
       else {
         // Building collider from mesh, a bit dirty
