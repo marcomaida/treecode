@@ -4,7 +4,6 @@ export class TreeSpecs {
         this.min_thickness = 2
         this.min_branch_length = 20
         this.branch_length = 50
-        this.num_segments = 1
         this.colliderCoating = 5
     }
 

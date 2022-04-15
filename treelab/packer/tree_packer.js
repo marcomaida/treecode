@@ -39,7 +39,7 @@ export class Packer {
             var dir = new PIXI.Vector(0,0)
 
             if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
-            //dir.add(springRandom(node).multiplyScalar(this.speed))
+            dir.add(springRandom(node).multiplyScalar(this.speed/5))
             if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
 
             const newPos = oldPos.clone().add(dir)
