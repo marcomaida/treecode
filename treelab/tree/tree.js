@@ -18,10 +18,15 @@ export class Tree {
       this.initialize_nodes(this.root, "X")
     }
 
-    /** Including the node itself, i.e., a leaf node has 1 descendant (itself) */
+    /** 
+     * Initializes all the attributes of a node. Most of them 
+     * are helpers (label, num descendants, tree)
+     * Including the node itself, i.e., a leaf node has 1 descendant 
+     * */
     initialize_nodes(node, prefix) {
       node.label = prefix
       var num = 1
+
       for (const [i, c] of node.children.entries()) {
         this.initialize_nodes(c, prefix + i.toString())
         num += c.numDescendants
