@@ -10,8 +10,8 @@ function wetherell_shannon(node, per_layer=[], depth=0){
                                             .add(new PIXI.Vector(0, -node.tree.specs.branch_length))
         else
             start_point = new PIXI.Vector(0, 0)
-
-        per_layer.push(start_point) 
+        
+        per_layer.push(new PIXI.Vector(0, start_point.y)) 
     }
 
     node.setPosition(per_layer[depth])
