@@ -8,6 +8,7 @@ export class Packer {
       this.nodes = []
       this.initial_speed = 5
       this.speed = this.initial_speed
+      this.decay = .99999
       this.init(tree.root)
     }
 
@@ -26,13 +27,19 @@ export class Packer {
     }
 
     tick() {
+        if (this.speed <= 0)
+            return
+        
+        var speed = this.speed
+        this.speed *= this.decay
+        if (this.speed <= 0.001) this.speed = 0
+
         // Pick random node
         const i = Math.ceil(Math.random() * (this.nodes.length -1)) // exclude root
         const node = this.nodes[i]
 
         var done = false
         var tries = 3
-        var speed = this.speed
         while (! done) {
             const oldPos = node.position.clone()
 
