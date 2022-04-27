@@ -1,8 +1,8 @@
 const NUM_JOINT_SEGMENTS = 5
 const NUM_SEED_SEGMENTS = 25
 export const SEED_RING_OUTER_RADIUS = 20
-const SEED_RING_INNER_RADIUS = 18
-const SEED_CIRCLE_RADIUS = 14
+const SEED_RING_INNER_RADIUS = SEED_RING_OUTER_RADIUS * .85
+const SEED_CIRCLE_RADIUS = SEED_RING_INNER_RADIUS * .8
 
 export function create_tree_mesh(tree) {
     /**  You need 6 elements for one triangle.

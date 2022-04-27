@@ -1,9 +1,9 @@
 export class TreeSpecs {
     constructor() {
-        this.max_thickness = 15
+        this.max_thickness = 8
         this.min_thickness = 2
-        this.min_branch_length = 15
-        this.max_branch_length = 30
+        this.min_branch_length = 3
+        this.max_branch_length = 10
         this.branch_length = 100 // used by initial layout //TODO remove
         this.colliderCoating = 5
         this.branchAngleSpan = Math.PI/2
@@ -17,10 +17,21 @@ export class TreeSpecs {
     }
 
     lengthAt(node) {
-        const total_descendants = node.tree.root.numDescendants
-        const weight = node.numDescendants / total_descendants
+        // const total_descendants = node.tree.root.numDescendants
+        // const weight = node.numDescendants / total_descendants
 
-        return Math.lerp(this.min_branch_length, this.max_branch_length, weight)
+        // var leaves = 0
+        // for (const c of node.children) {
+        //     leaves += c.children.length === 0
+        // }
+        // if (leaves >= node.children.length-1)
+        //     return this.min_branch_length
+
+        // return Math.lerp(this.min_branch_length, this.max_branch_length, weight)
+
+        return node.children.length == 0 ? 
+               this.min_branch_length :
+               this.max_branch_length
     }
 
     angleAt(node, is_left) {

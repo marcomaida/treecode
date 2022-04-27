@@ -8,7 +8,7 @@ export class Packer {
       this.nodes = []
       this.initial_speed = 5
       this.speed = this.initial_speed
-      this.decay = .99999
+      this.decay = .999993
       this.init(tree.root)
     }
 
@@ -47,8 +47,8 @@ export class Packer {
 
             if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
             dir.add(springRandom(node).multiplyScalar(this.speed/10))
-            //if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
-            if (Math.random() > .5) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
+            if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
+            //if (Math.random() > .5) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
 
             const newPos = oldPos.clone().add(dir)
             node.setPosition(newPos)
