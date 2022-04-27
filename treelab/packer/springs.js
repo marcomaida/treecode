@@ -1,4 +1,4 @@
-import { drawDebugArrow, clearDebug } from "../drawing/debug.js"
+import { drawDebugArrow, clearDebug, drawDebugCircle } from "../drawing/debug.js"
 
 /** returns a force vector that pushes v to reach the 
  *  target distance to v_other */
@@ -102,6 +102,40 @@ export function springNeighborsAngle(node) {
     spring.add(angleSpring(N, L, C, tL))
     spring.add(angleSpring(N, R, C, tR))
 
+    if (spring.lengthSq() > 1)
+        spring.normalize()
+
+    return spring
+}
+
+/**   
+ *  Computing the optimal bend to keep the spine of the tree
+ *  straight
+ */
+export function springNeighborsAngleSpine(node) {
+    const cs = node.father.children
+
+    const idx = cs.indexOf(node)
+    const span = node.tree.specs.branchAngleSpan
+    const bend = (cs[0].numDescendants / node.father.numDescendants - 
+                  cs[cs.length-1].numDescendants / node.father.numDescendants) 
+                  * span/2
+
+    const target_angle = cs.length > 1 ? 
+                         Math.lerp(bend-span/2, bend+span/2, idx / (cs.length-1)) :
+                         0
+    
+    const N = node.position.clone()
+    const D = node.father.position.clone().add(node.father.direction)
+    const F = node.father.position.clone()
+
+    var force = (N.angleRelativeTo(D, F) - target_angle) / Math.PI
+    
+    const spring = N.clone().sub(F)
+                    .normalize()
+                    .perpendicular(true)
+                    .multiplyScalar(force)
+    
     if (spring.lengthSq() > 1)
         spring.normalize()
 

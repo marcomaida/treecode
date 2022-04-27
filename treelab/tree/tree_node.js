@@ -71,7 +71,7 @@ export class TreeNode {
     
     get direction() {
       if (this.father === null)
-        return new PIXI.Vector(0,1)
+        return new PIXI.Vector(0,-1)
       else
         return this.position.clone().sub(this.father.position)
     }

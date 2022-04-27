@@ -9,7 +9,7 @@ import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
-var stream = new BitStreamText("Hello world!")//ello world!")
+var stream = new BitStreamText("Hello world")//ello world!")
 var specs = new TreeSpecs()
 var t = bitsToTree(stream, specs)
 
