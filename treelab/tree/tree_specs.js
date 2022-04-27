@@ -17,21 +17,17 @@ export class TreeSpecs {
     }
 
     lengthAt(node) {
-        // const total_descendants = node.tree.root.numDescendants
-        // const weight = node.numDescendants / total_descendants
+        const total_descendants = node.tree.root.numDescendants
+        const weight = node.numDescendants / total_descendants
 
-        // var leaves = 0
-        // for (const c of node.children) {
-        //     leaves += c.children.length === 0
-        // }
-        // if (leaves >= node.children.length-1)
-        //     return this.min_branch_length
+        var leaves = 0
+        for (const c of node.children) {
+            leaves += c.children.length === 0
+        }
+        if (leaves >= node.children.length-1)
+            return this.min_branch_length
 
-        // return Math.lerp(this.min_branch_length, this.max_branch_length, weight)
-
-        return node.children.length == 0 ? 
-               this.min_branch_length :
-               this.max_branch_length
+        return Math.lerp(this.min_branch_length, this.max_branch_length, weight)
     }
 
     angleAt(node, is_left) {
