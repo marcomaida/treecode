@@ -108,6 +108,18 @@ export function springNeighborsAngle(node) {
     return spring
 }
 
+
+export function springNeighborsSeed(node) {
+    var spring = new PIXI.Vector(0,0)
+
+    spring.add(distanceSpring(node.position, node.tree.root.position, node.tree.specs.lengthAt(node)))
+   
+    if (spring.lengthSq() > 1)
+        spring.normalize()
+
+    return spring
+}
+
 /**   
  *  Computing the optimal bend to keep the spine of the tree
  *  straight

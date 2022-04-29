@@ -1,5 +1,5 @@
 import { clearDebug, drawDebugArrow } from "../drawing/debug.js"
-import { springNeighborsDistance, springNeighborsAngle, springRandom, springNeighborsAngleSpine } from "./springs.js"
+import { springNeighborsDistance, springNeighborsAngle, springRandom, springNeighborsAngleSpine, springNeighborsSeed } from "./springs.js"
 import { isBranchAreaIntersectingTree } from "./tree_collision.js"
 
 export class Packer {
@@ -8,7 +8,7 @@ export class Packer {
       this.nodes = []
       this.initial_speed = 5
       this.speed = this.initial_speed
-      this.decay = .999993
+      this.decay = .999999
       this.init(tree.root)
     }
 
@@ -27,6 +27,8 @@ export class Packer {
     }
 
     tick() {
+
+        //console.log(this.nodes.length)
         if (this.speed <= 0)
             return
         
@@ -46,8 +48,9 @@ export class Packer {
             var dir = new PIXI.Vector(0,0)
 
             if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
-            dir.add(springRandom(node).multiplyScalar(this.speed/10))
+            dir.add(springRandom(node).multiplyScalar(this.speed/5))
             if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
+            if (Math.random() > .5) dir.add(springNeighborsSeed(node).multiplyScalar(speed/5))
             //if (Math.random() > .5) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
 
             const newPos = oldPos.clone().add(dir)
