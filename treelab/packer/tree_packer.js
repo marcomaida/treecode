@@ -48,7 +48,7 @@ export class Packer {
             var dir = new PIXI.Vector(0,0)
 
             if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
-            dir.add(springRandom(node).multiplyScalar(this.speed/5))
+            if (Math.random() > .5) dir.add(springRandom(node).multiplyScalar(this.speed/2))
             if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
             if (Math.random() > .5) dir.add(springNeighborsSeed(node).multiplyScalar(speed/5))
             //if (Math.random() > .5) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
@@ -61,7 +61,7 @@ export class Packer {
                 node.setPosition(oldPos)
                 //this.speed += .1
                 tries --
-                speed /= 2
+                speed *= 2
                 if (tries <= 0) done = true 
             }
             else {

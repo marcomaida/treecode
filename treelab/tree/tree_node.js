@@ -44,7 +44,8 @@ export class TreeNode {
       this.colliderFromMesh()
       drawJoint(this)
 
-      //coatPolygon(this.colliderPolygon, this.tree.specs.colliderCoating)
+      //scalePolygon(this.colliderPolygon, this.tree.specs.colliderCoating)
+      coatPolygon(this.colliderPolygon, this.tree.specs.colliderCoating)
     }
 
     colliderFromMesh() {
