@@ -9,7 +9,7 @@ import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
-var stream = new BitStreamText("Hello world")//ello world!")
+var stream = new BitStreamText("Hello world!")//ello world!")
 var specs = new TreeSpecs()
 var t = bitsToTree(stream, specs)
 
@@ -39,8 +39,8 @@ app.ticker.add((delta) => {
     packer.tick_many(1000)
     i += 1
 
-    if (i % 10000 == 0)
-        layout_wetherell_shannon(t)
+    //if (i % 10000 == 0)
+    //    layout_wetherell_shannon(t)
 
     t.buffer.update()
     // if  (i < 10)
