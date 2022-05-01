@@ -19,6 +19,6 @@ function wetherell_shannon(node, per_layer=[], depth=0){
     for (const c of node.children)
         wetherell_shannon(c, per_layer, depth+1)
 
-    per_layer[depth].add(new PIXI.Vector(node.tree.specs.branch_length/3, 0))
+    per_layer[depth].add(new PIXI.Vector(node.tree.specs.branch_length, 0))
     
 }

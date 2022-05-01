@@ -8,7 +8,7 @@ export class Packer {
       this.nodes = []
       this.initial_speed = 5
       this.speed = this.initial_speed
-      this.decay = .999999
+      this.decay = .999998
       this.init(tree.root)
     }
 
@@ -47,11 +47,11 @@ export class Packer {
 
             var dir = new PIXI.Vector(0,0)
 
-            if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed*2))
+            if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
             dir.add(springRandom(node).multiplyScalar(this.speed/2))
-            if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
-            if (Math.random() > .5) dir.add(springNeighborsSeed(node).multiplyScalar(speed/5))
-            //if (Math.random() > .5) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
+            //if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
+            //if (Math.random() > .5) dir.add(springNeighborsSeed(node).multiplyScalar(speed/5))
+            if (Math.random() > .5) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
 
             const newPos = oldPos.clone().add(dir)
             node.setPosition(newPos)
