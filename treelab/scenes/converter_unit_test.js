@@ -60,7 +60,7 @@ for (var i=0; i < 100000000; i++) {
     if (result) {
         ok_text.innerHTML = "OK"
         ok_text.style.color = "green"
-        await new Promise(resolve => setTimeout(resolve, 20));
+        await new Promise(resolve => setTimeout(resolve, 0.0001));
     }
     else { 
         ok_text.innerHTML = "FAIL!"
