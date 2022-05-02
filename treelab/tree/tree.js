@@ -35,14 +35,14 @@ export class Tree {
       node.tree = this
     }
 
-    initializeMesh(app) {
+    initializeMesh(app, position) {
       const vertices = create_tree_mesh(this)
 
       const geometry = new PIXI.Geometry()
                               .addAttribute('aVertexPosition', vertices)
       this.pixiMesh = new PIXI.Mesh(geometry, getShader())
       this.buffer = this.pixiMesh.geometry.getBuffer('aVertexPosition');
-      this.pixiMesh.position.set(window.innerWidth/2, window.innerHeight/2)
+      this.pixiMesh.position.set(position.x, position.y)
       app.stage.addChild(this.pixiMesh)
       this.mesh = this.buffer.data
 

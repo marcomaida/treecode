@@ -17,3 +17,17 @@ export class BitStreamText {
         yield 1; // final extra one
     }
 }
+
+export class BitStreamBitString {
+    constructor (bits) {
+        this.bits = bits;
+    }
+
+    *getStream(){
+        for (const bit of this.bits){
+            yield bit == '1'? 1 : 0;
+        }
+
+        yield 1; // final extra one
+    }
+}

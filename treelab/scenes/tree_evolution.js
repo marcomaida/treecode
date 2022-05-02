@@ -21,7 +21,7 @@ const app = new PIXI.Application({
 initDebug(app)
 
 document.body.appendChild(app.view)
-t.initializeMesh(app)
+t.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, window.innerHeight/2))
 
 layout_wetherell_shannon(t)
 
