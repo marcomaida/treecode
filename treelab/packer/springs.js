@@ -48,7 +48,7 @@ export function springNeighborsDistance(node) {
     var spring = new PIXI.Vector(0,0)
 
     spring.add(distanceSpring(node.position, node.father.position, node.tree.specs.lengthAt(node)))
-    spring.multiplyScalar(10)
+    spring.multiplyScalar(3 * (node.children.length+1))
 
     for (const c of node.children) {
         if (c === node) continue

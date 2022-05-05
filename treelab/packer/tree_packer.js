@@ -41,17 +41,17 @@ export class Packer {
         const node = this.nodes[i]
 
         var done = false
-        var tries = 3
+        var tries = 2
         while (! done) {
             const oldPos = node.position.clone()
 
             var dir = new PIXI.Vector(0,0)
 
-            if (Math.random() > .5) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
+            if (Math.random() > .3) dir.add(springNeighborsDistance(node).multiplyScalar(speed))
             dir.add(springRandom(node).multiplyScalar(this.speed/2))
             //if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
-            //if (Math.random() > .5) dir.add(springNeighborsSeed(node).multiplyScalar(speed/5))
-            if (Math.random() > .5) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
+            //if (Math.random() > .5) dir.add(springNeighborsSeed(node).multiplyScalar(speed/3))
+            if (Math.random() > .3) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
 
             const newPos = oldPos.clone().add(dir)
             node.setPosition(newPos)

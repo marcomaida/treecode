@@ -9,7 +9,7 @@ import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
-var stream = new BitStreamText("https://www.maida.me")//ello world!")
+var stream = new BitStreamText("Hello world!")//ello world!")
 var specs = new TreeSpecs()
 var t = bitsToTree(stream, specs)
 
@@ -21,7 +21,7 @@ const app = new PIXI.Application({
 initDebug(app)
 
 document.body.appendChild(app.view)
-t.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, window.innerHeight/2))
+t.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, window.innerHeight/1.3))
 
 layout_wetherell_shannon(t)
 
