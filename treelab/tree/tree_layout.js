@@ -38,24 +38,25 @@ function setup(node, per_layer=[], depth=0) {
     for (const c of node.children)
         setup(c, per_layer, depth+1)
 
-    node.setPosition(per_layer[depth])
-    per_layer[depth].add(new PIXI.Vector(node.tree.specs.branch_length, 0))
-}
+    // Center based on children
+    var newpos = null
+    switch (node.children.length) {
+        case 0:
+            newpos = per_layer[depth]
+            break
+        case 1:
+            newpos = per_layer[depth].clone().setX(node.children[0].position.x)
+            break
+        case 2:
+            var mid = (node.children[1].position.x + node.children[0].position.x) / 2
+            newpos = per_layer[depth].clone().setX(mid)
+            break
+        case 3:
+            var mid = (node.children[2].position.x + node.children[0].position.x) / 2
+            newpos = per_layer[depth].clone().setX(mid)
+            break
+    }
 
-// switch (node.children.length) {
-//     case 0:
-//         node.setPosition(per_layer[depth])
-//         break
-//     case 1:
-//         node.setPosition(per_layer[depth])
-//         break
-//     case 2:
-//         mid = (node.children[1].position.x - node.children[0].position.x) / 2
-//         newpos = per_layer[depth].clone().add(new PIXI.Vector(-mid, 0))
-//         node.setPosition(newpos)
-//         node.setPosition(per_layer[depth])
-//         break
-//     default:
-//         node.setPosition(per_layer[depth])
-//         break
-// }
+    node.setPosition(newpos)
+    per_layer[depth] = newpos.clone().add(new PIXI.Vector(node.tree.specs.branch_length, 0))
+}
