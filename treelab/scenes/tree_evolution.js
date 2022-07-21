@@ -9,48 +9,53 @@ import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
-var stream = new BitStreamText("Hello world!")//ello world!")
-var specs = new TreeSpecs()
-var t = bitsToTree(stream, specs)
+//****** Setting up page */
+
+const canvasDiv = document.getElementById("canvasDiv")
+const inputTextBox = document.getElementById("inputText")
+inputTextBox.select()
+inputTextBox.focus()
+
+const canvasheight = window.innerHeight-170
 
 const app = new PIXI.Application({
     width: window.innerWidth,
-    height: window.innerHeight,
+    height: canvasheight, // Todo do properly
     resolution: 1
 })
 initDebug(app)
 
-document.body.appendChild(app.view)
-t.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, window.innerHeight/1.3))
+canvasDiv.appendChild(app.view)
+document.body.scrollTop = 0; // <-- pull the page back up to the top
+document.body.style.overflow = 'hidden'; // <-- relevant addition
 
-layout_wetherell_shannon(t)
+var current_tree = null
+var current_ticker = null
 
-var i = 0
-var packer = new Packer(t)
+//****** Updating tree */
 
-//var node = t.root.children[2].children[2]
-//var base = node.position.clone()
+function updateTree() {
+    if (current_tree !== null)
+        current_tree.destroyMesh(app)
+    if (current_ticker !== null)
+        app.ticker.remove(current_ticker)
 
-//const base = t.root.position
-//t.root.children[2].children[2].setPosition(t.root.children[2].children[2].position.add(new PIXI.Vector(-130,120)))
-app.ticker.add((delta) => {
-    //var seconds = new Date().getTime() / 1000
-    //t.root.children[0].setPosition(base.clone().add(new PIXI.Vector(Math.cos(seconds/2)*50,Math.sin(seconds/2)*50)))
-    packer.tick_many(1000)
-    i += 1
+    var inputText = document.getElementById("inputText").value
+    var stream = new BitStreamText(inputText)
+    var specs = new TreeSpecs()
+    
+    current_tree = bitsToTree(stream, specs)
+    current_tree.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, canvasheight/1.2))
+    layout_wetherell_shannon(current_tree)
+    
+    var packer = new Packer(current_tree)
+    current_ticker = (delta) => {
+        console.log(inputTextBox.value)
+        packer.tick_many((inputTextBox.value.length+1)*30)
+        current_tree.buffer.update()
+    }
+    app.ticker.add(current_ticker)
+}
 
-    //if (i % 10000 == 0)
-    //    layout_wetherell_shannon(t)
-
-    t.buffer.update()
-    // if  (i < 10)
-    //     for (var c of treeIterator(t))
-    //     {
-    //         var s = 2
-    //         for (var vec of c.colliderPolygon) { 
-    //             drawDebugRegularPolygon(t.transformPosition(vec), 4, s)
-    //             s += 1
-    //         }
-    //     }
-    //console.log(isBranchIntersectingTree(t.root.children[2].children[2].children[1]))
-})
+updateTree()
+inputTextBox.addEventListener('input', updateTree);

@@ -49,6 +49,10 @@ export class Tree {
       drawSeed(this)
     }
 
+    destroyMesh(app) {
+      app.stage.removeChild(this.pixiMesh)
+    }
+
     seedCollider() {
       var r = SEED_RING_OUTER_RADIUS*1.2 //TODO more science, this is a random number
       this.root.colliderPolygon = circlePolygon(this.root.position, r, SEED_COLLIDER_SEGMENTS)
