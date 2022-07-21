@@ -9,7 +9,9 @@ import { treeIterator } from "../tree/tree.js"
 import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
-var stream = new BitStreamText("Hello world!")//ello world!")
+// var stream = new BitStreamText("wwwwwwwwwwww")//ello world!")
+var stream = new BitStreamText("www")
+// var stream = new BitStreamText("")
 var specs = new TreeSpecs()
 var t = bitsToTree(stream, specs)
 
@@ -36,7 +38,7 @@ var packer = new Packer(t)
 app.ticker.add((delta) => {
     //var seconds = new Date().getTime() / 1000
     //t.root.children[0].setPosition(base.clone().add(new PIXI.Vector(Math.cos(seconds/2)*50,Math.sin(seconds/2)*50)))
-    packer.tick_many(1000)
+    packer.tick_many(0)
     i += 1
 
     //if (i % 10000 == 0)
@@ -47,7 +49,7 @@ app.ticker.add((delta) => {
     //     for (var c of treeIterator(t))
     //     {
     //         var s = 2
-    //         for (var vec of c.colliderPolygon) { 
+    //         for (var vec of c.colliderPolygon) {
     //             drawDebugRegularPolygon(t.transformPosition(vec), 4, s)
     //             s += 1
     //         }
