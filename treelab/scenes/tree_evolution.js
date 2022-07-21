@@ -26,6 +26,7 @@ document.body.appendChild(app.view)
 t.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, window.innerHeight/1.3))
 
 layout_wetherell_shannon(t)
+t.refresh_nodes(t)
 
 var i = 0
 var packer = new Packer(t)

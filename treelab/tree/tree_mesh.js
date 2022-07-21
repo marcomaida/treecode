@@ -154,10 +154,10 @@ export function drawSeed(tree) {
 
     var ra = null
     var rb = null
-    var rc = new PIXI.Vector(1 * SEED_RING_INNER_RADIUS, 0)
-    var rd = new PIXI.Vector(1 * SEED_RING_OUTER_RADIUS, 0)
+    var rc = new PIXI.Vector(1 * SEED_RING_INNER_RADIUS, 0).add(c)
+    var rd = new PIXI.Vector(1 * SEED_RING_OUTER_RADIUS, 0).add(c)
     var ca = null
-    var cb = new PIXI.Vector(1 * SEED_CIRCLE_RADIUS, 0)
+    var cb = new PIXI.Vector(1 * SEED_CIRCLE_RADIUS, 0).add(c)
 
     for (var i = 1; i <= NUM_SEED_SEGMENTS; i ++) {
         ra = rc 

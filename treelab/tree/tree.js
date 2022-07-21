@@ -49,6 +49,19 @@ export class Tree {
       drawSeed(this)
     }
 
+    /* If multiple nodes are moved together,
+       the mesh may be broken. This function fixes
+       this behavior */
+    refresh_nodes(t) {
+      this._refresh_nodes(t.root)
+      drawSeed(this)
+    }
+
+    _refresh_nodes(node) {
+      node.setPosition(node.position)
+      for (const c of node.children) this._refresh_nodes(c)
+    }
+
     seedCollider() {
       var r = SEED_RING_OUTER_RADIUS*1.2 //TODO more science, this is a random number
       this.root.colliderPolygon = circlePolygon(this.root.position, r, SEED_COLLIDER_SEGMENTS)
