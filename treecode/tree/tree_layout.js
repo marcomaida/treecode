@@ -78,14 +78,6 @@ function resolve_conflicts(node) {
                 shift_amount = tree_spacing - distance
         }
 
-        if (node.position.x == 250 && node.position.y == -100) {
-            console.log("Sibling should be the middle child: ", sibling.position.x, sibling.position.y)
-            console.log("And I am: ", node.position.x, node.position.y)
-            console.log("I must shift: ", shift_amount)
-            console.log(sibling_contour)
-            console.log(node_contour)
-        }
-
         // Resolve the conflict, if any
         if (shift_amount > 0) {
             node.position.add(new PIXI.Vector(shift_amount, 0))
@@ -129,37 +121,7 @@ function shift_tree(node, x_offset) {
         shift_tree(c, x_offset)
 }
 
-// Debug
-
-function big_hammer_bottomup(node) {
-    for (const c of node.children)
-        big_hammer_bottomup(c)
-
-    resolve_conflicts(node)
-}
-
-function big_hammer_topdown(node) {
-    resolve_conflicts(node)
-
-    for (const c of node.children)
-        big_hammer_topdown(c)
-}
-
-function reset_mod(node) {
-    node.x_mod = 0
-
-    for (const c of node.children)
-        reset_mod(c)
-}
-
-function print_tree(node) {
-    console.log("I am node ", node.position.x/node.tree.specs.branch_length, node.position.y/node.tree.specs.branch_length, "with ", node.children.length, " children")
-
-    for (const c of node.children)
-        print_tree(c)
-}
-
-// Pre-order visit
+// Old pre-order visit
 function wetherell_shannon(node, per_layer=[], depth=0) {
     var start_point = null
     if (depth > 0) {
