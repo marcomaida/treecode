@@ -4,7 +4,7 @@ import { TreeSpecs } from "../tree/tree_specs.js";
 import {} from "../geometry/vector.js"
 import {} from "../geometry/math.js"
 import { initDebug } from "../drawing/debug.js";
-import { layout_wetherell_shannon } from "../tree/tree_layout.js";
+import { set_layout } from "../tree/tree_layout.js";
 
 
 const VISUALIZE_TREE = true
@@ -38,13 +38,13 @@ function tick(i) {
     var t = bitsToTree(stream, specs)
     var bits_decoded = treeToBits(t).toString()
 
-    log_text.innerHTML = "######## " + i + "<br>" + 
+    log_text.innerHTML = "######## " + i + "<br>" +
                         "Input........ " + bits_input + "<br>" +
                         "Decoded.. " + bits_decoded;
 
     if (VISUALIZE_TREE) {
         t.initializeMesh(app, new PIXI.Vector(100, (window.innerHeight-100)/1.3))
-        layout_wetherell_shannon(t)
+        set_layout(t)
     }
 
     return bits_input === bits_decoded
@@ -55,14 +55,14 @@ for (var i=0; i < 100000000; i++) {
         for (var j = app.stage.children.length - 1; j >= 0; j--) {	app.stage.removeChild(app.stage.children[j]) }
     }
 
-    const result = tick(i) 
+    const result = tick(i)
 
     if (result) {
         ok_text.innerHTML = "OK"
         ok_text.style.color = "green"
         await new Promise(resolve => setTimeout(resolve, 0.0001));
     }
-    else { 
+    else {
         ok_text.innerHTML = "FAIL!"
         ok_text.style.color = "red"
         break

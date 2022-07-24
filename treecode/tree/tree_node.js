@@ -16,6 +16,9 @@ export class TreeNode {
       this.colliderPolygon = null
       this.position = new PIXI.Vector(0,0)
       this.tree = null
+
+      // Only used in the reingold_tilford algorithm
+      this.x_mod = 0
     }
 
     // sets node position and updates all the mesh points
@@ -23,7 +26,7 @@ export class TreeNode {
       this.position = pos.clone()
 
       const thickness = this.tree.specs.thicknessAt(this)
-    
+
       // Setting this branch position
       if (this.father !== null)
       {
@@ -52,7 +55,7 @@ export class TreeNode {
       const thickness = this.tree.specs.thicknessAt(this)
 
       if (this.father === null) {
-        this.tree.seedCollider() 
+        this.tree.seedCollider()
       }
       else {
         // Building collider from mesh, a bit dirty
@@ -67,16 +70,16 @@ export class TreeNode {
         er.add(extra)
 
         this.colliderPolygon = [sr,sl,er,el]
-      } 
+      }
     }
-    
+
     get direction() {
       if (this.father === null)
         return new PIXI.Vector(0,-1)
       else
         return this.position.clone().sub(this.father.position)
     }
-  
+
     // relative to father
     get relativePosition() {
       if (this.father === null)
@@ -84,8 +87,70 @@ export class TreeNode {
       else
         return this.position.clone().sub(this.father.position)
     }
-  
-    get isLeaf() {
+
+    isLeaf() {
       return this.children.length === 0;
+    }
+
+    isLeftmostSibling() {
+      if (this.father === null)
+        return true
+
+      return this.father.children[0] === this;
+    }
+
+    isRightmostSibling() {
+      if (this.father === null)
+        return true
+
+      return this.father.children[2] === this;
+    }
+
+    getLeftSibling() {
+      if (this.isLeftmostSibling())
+        return null
+
+        for (let [i, node] of this.father.children.entries()) {
+          if (node == this)
+            return this.father.children[i-1]
+        }
+    }
+
+    getRightSibling() {
+      if (this.isRightmostSibling())
+        return null
+
+        for (let [i, node] of this.father.children.entries()) {
+          if (node == this)
+            return this.father.children[i+1]
+        }
+    }
+
+    getLeftContour() {
+      let contour = []
+      this.getContour(true, contour)
+      return contour
+    }
+
+    getRightContour() {
+      let contour = []
+      this.getContour(false, contour)
+      return contour
+    }
+
+    // Watch out: the depth used for contour_map is relative to this node and not the whole tree!
+    getContour(is_left, contour_map, modsum=0, depth=0) {
+      if (depth >= contour_map.length) {
+        contour_map.push(this.position.x + modsum)
+      }
+      else {
+        if (is_left)
+          contour_map[depth] = Math.min(contour_map[depth], this.position.x + modsum)
+        else
+          contour_map[depth] = Math.max(contour_map[depth], this.position.x + modsum)
+      }
+
+      for (const c of this.children)
+        c.getContour(is_left, contour_map, modsum+this.x_mod, depth+1)
     }
   }

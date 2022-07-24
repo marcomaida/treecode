@@ -2,7 +2,7 @@ import {bitsToTree} from "../conversion/converter.js"
 import {BitStreamText} from "../conversion/bit_stream.js"
 import {} from "../geometry/vector.js"
 import {} from "../geometry/math.js"
-import { layout_wetherell_shannon } from "../tree/tree_layout.js";
+import { set_layout } from "../tree/tree_layout.js";
 import { Packer } from "../packer/tree_packer.js"
 import { clearDebug, initDebug } from "../drawing/debug.js"
 import { treeIterator } from "../tree/tree.js"
@@ -43,11 +43,11 @@ function updateTree() {
     var inputText = document.getElementById("inputText").value
     var stream = new BitStreamText(inputText)
     var specs = new TreeSpecs()
-    
+
     current_tree = bitsToTree(stream, specs)
     current_tree.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, canvasheight/1.2))
-    layout_wetherell_shannon(current_tree)
-    
+    set_layout(current_tree)
+
     var packer = new Packer(current_tree)
     current_ticker = (delta) => {
         console.log(inputTextBox.value)
