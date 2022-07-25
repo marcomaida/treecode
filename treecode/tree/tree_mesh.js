@@ -22,14 +22,14 @@ export function create_tree_mesh(tree) {
 /**
  * This function maps each node of the tree with a set of indices
  * of the vertices array that must be at the same position as the node.
- * 
+ *
  * The branch mesh is composed of two triangles:
  *    (node)
  *   c ___ d
  *    |\  |     mesh vertices: [ax,ay,bx,by,cx,cy,bx,by,cx,cy,dx,dy]
- *    | \ |     
- *    |__\|       
- *   a     b    
+ *    | \ |
+ *    |__\|
+ *   a     b
  *   (father)
  */
 export function initialize_nodes_mesh(node, next_node_index, next_joint_index) {
@@ -64,7 +64,7 @@ export function initialize_nodes_mesh(node, next_node_index, next_joint_index) {
 /**
  * Moves the given left vertices and right vertices so that they are positioned on a circle
  * with center `start` and with radius `thickness`, on a line perpendicular to the direction
- * `end-start` 
+ * `end-start`
  *      END
  *  /        /
  * /        /
@@ -93,7 +93,7 @@ export function jointVertices(start, end, thickness, left_vertices, right_vertic
     }
 }
 
-/**  
+/**
  * Converts a vertex in a mesh to a vector
 */
 export function vertexToVec(v, mesh){
@@ -129,24 +129,24 @@ export function drawJoint(node) {
 
 /**
  * Drawing a ring and a circle
- *   
+ *
  * rc ___  rd
- *    \\  \    
- *     \ \ \     
- *      \__\\       
- *     ra      rb    
- *   
- * 
+ *    \\  \
+ *     \ \ \
+ *      \__\\
+ *     ra      rb
+ *
+ *
  * Circle:
  *   c  ______  cb
  *     .\    /
  *    .  \  /
- *   .....\/ ca 
- *      
+ *   .....\/ ca
+ *
  */
 export function drawSeed(tree) {
     const mesh = tree.mesh
-    
+
     var ri = tree.seedPosition  // ring start position
     var ci = ri + NUM_SEED_SEGMENTS * 12 //circle start position
 
@@ -154,13 +154,13 @@ export function drawSeed(tree) {
 
     var ra = null
     var rb = null
-    var rc = new PIXI.Vector(1 * SEED_RING_INNER_RADIUS, 0)
-    var rd = new PIXI.Vector(1 * SEED_RING_OUTER_RADIUS, 0)
+    var rc = new PIXI.Vector(1 * SEED_RING_INNER_RADIUS, 0).add(c)
+    var rd = new PIXI.Vector(1 * SEED_RING_OUTER_RADIUS, 0).add(c)
     var ca = null
-    var cb = new PIXI.Vector(1 * SEED_CIRCLE_RADIUS, 0)
+    var cb = new PIXI.Vector(1 * SEED_CIRCLE_RADIUS, 0).add(c)
 
     for (var i = 1; i <= NUM_SEED_SEGMENTS; i ++) {
-        ra = rc 
+        ra = rc
         rb = rd
         ca = cb
 

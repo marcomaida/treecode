@@ -47,6 +47,7 @@ function updateTree() {
     current_tree = bitsToTree(stream, specs)
     current_tree.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, canvasheight/1.2))
     set_layout(current_tree)
+    current_tree.refresh_nodes(current_tree)
 
     var packer = new Packer(current_tree)
     current_ticker = (delta) => {

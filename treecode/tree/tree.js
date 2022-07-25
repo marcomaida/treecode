@@ -18,10 +18,10 @@ export class Tree {
       this.initialize_nodes(this.root, "X")
     }
 
-    /** 
-     * Initializes all the attributes of a node. Most of them 
+    /**
+     * Initializes all the attributes of a node. Most of them
      * are helpers (label, num descendants, tree)
-     * Including the node itself, i.e., a leaf node has 1 descendant 
+     * Including the node itself, i.e., a leaf node has 1 descendant
      * */
     initialize_nodes(node, prefix) {
       node.label = prefix
@@ -49,6 +49,19 @@ export class Tree {
       drawSeed(this)
     }
 
+    /* If multiple nodes are moved together,
+       the mesh may be broken. This function fixes
+       this behavior */
+    refresh_nodes(t) {
+      this._refresh_nodes(t.root)
+      drawSeed(this)
+    }
+
+    _refresh_nodes(node) {
+      node.setPosition(node.position)
+      for (const c of node.children) this._refresh_nodes(c)
+    }
+
     destroyMesh(app) {
       app.stage.removeChild(this.pixiMesh)
     }
@@ -67,9 +80,9 @@ export function* treeIterator(tree) {
     var node = tree.root
     var frontier = [node]
 
-    while (frontier.length > 0) { 
+    while (frontier.length > 0) {
       node = frontier.shift()
-      frontier.push(...node.children) 
+      frontier.push(...node.children)
       yield node
     }
 }
