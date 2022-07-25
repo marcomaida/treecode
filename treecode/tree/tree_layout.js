@@ -80,22 +80,22 @@ function resolve_conflicts(node) {
 
         // Resolve the conflict, if any
         if (shift_amount > 0) {
-            node.position.add(new PIXI.Vector(shift_amount, 0))
+            node.setPosition(node.position.clone().add(new PIXI.Vector(shift_amount, 0)))
             node.x_mod += shift_amount
 
             // Update contour
             for (let i = 0; i < node_contour.length; i++)
-            node_contour[i] += shift_amount
+                node_contour[i] += shift_amount
 
             // Edge case: there was a node in between, then it must be moved in the middle
             if (node.father.children.length === 3 && sibling.isLeftmostSibling() && node.isRightmostSibling()) {
                 let mid_child = node.father.children[1]
                 let mid = (node.position.x + sibling.position.x) / 2
                 let mid_shift = mid - mid_child.position.x
-                mid_child.position.add(new PIXI.Vector(mid_shift, 0))
+                mid_child.setPosition(mid_child.position.clone().add(new PIXI.Vector(mid_shift, 0)))
                 mid_child.x_mod += mid_shift
                 // Shrug
-                resolve_conflicts(node.father.children[1])
+                resolve_conflicts(mid_child)
             }
         }
 
