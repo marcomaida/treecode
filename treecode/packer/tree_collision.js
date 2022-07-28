@@ -73,9 +73,6 @@ function areBranchesIntersecting(nodea, nodeb) {
             tipb = nodeb
         }
 
-        const min_distance = Math.max(tipa.tree.specs.thicknessAt(tipa), 
-                                      tipb.tree.specs.thicknessAt(tipb)) * 2 + 3
-
         var longer = null
         var shorter = null
 
@@ -95,6 +92,8 @@ function areBranchesIntersecting(nodea, nodeb) {
                         .multiplyScalar(center.position.distanceTo(shorter))
                         .add(center.position)
 
+        const min_distance = tipa.tree.specs.thicknessAt(tipa) + 
+                             tipb.tree.specs.thicknessAt(tipb) + 1
         return shorter.distanceToSq(longer) < min_distance**2
 
         // if (b_is_child)  nodea_dir.multiplyScalar(-1)

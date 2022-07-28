@@ -44,11 +44,11 @@ function angleSpring(v, v_other, center, target_angle) {
                     .multiplyScalar(dist)
 }
 
-export function springNeighborsDistance(node) {
+export function springNeighborsDistance(node, father_multiplier) {
     var spring = new PIXI.Vector(0,0)
 
     spring.add(distanceSpring(node.position, node.father.position, node.tree.specs.lengthAt(node)))
-    spring.multiplyScalar(3 * (node.children.length+1))
+    spring.multiplyScalar(father_multiplier * (node.children.length+1))
 
     for (const c of node.children) {
         if (c === node) continue
