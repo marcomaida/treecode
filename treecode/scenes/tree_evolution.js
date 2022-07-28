@@ -51,7 +51,6 @@ function updateTree() {
 
     var packer = new Packer(current_tree)
     current_ticker = (delta) => {
-        console.log(inputTextBox.value)
         packer.tick_many((inputTextBox.value.length+1)*30)
         current_tree.buffer.update()
     }
