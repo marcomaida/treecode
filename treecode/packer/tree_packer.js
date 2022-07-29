@@ -28,7 +28,7 @@ export class Packer {
 
     tick() {
 
-        //console.log(this.nodes.length)
+        // Pick speed
         if (this.speed <= 0)
             return
         
@@ -40,30 +40,36 @@ export class Packer {
         const i = Math.ceil(Math.random() * (this.nodes.length -2)) // exclude root and first child
         const node = this.nodes[i+1]
 
+        // Determine direction (no random)
+
+        var dir = new PIXI.Vector(0,0)
+
+        const father_multiplier = 3
+        dir.add(springNeighborsDistance(node, father_multiplier))
+        dir.add(springNeighborsAngleSpine(node))
+        //dir.add(springNeighborsAngle(node))
+        //dir.add(springNeighborsSeed(node).multiplyScalar(speed/3))
+
+        // Try to move. If fail, retry adding random
+        dir.normalize()
+        dir.multiplyScalar(speed)
+
         var done = false
-        var tries = 2
+        var tries = 3
+        var random_speed = dir.length()
         while (! done) {
             const oldPos = node.position.clone()
-
-            var dir = new PIXI.Vector(0,0)
-
-            const father_multiplier = 3
-            if (Math.random() > .3) 
-                dir.add(springNeighborsDistance(node, father_multiplier).multiplyScalar(speed))
-            //dir.add(springRandom(node).multiplyScalar(this.speed/2))
-            //if (Math.random() > .5) dir.add(springNeighborsAngle(node).multiplyScalar(speed))
-            //if (Math.random() > .5) dir.add(springNeighborsSeed(node).multiplyScalar(speed/3))
-            if (Math.random() > .3) dir.add(springNeighborsAngleSpine(node).multiplyScalar(speed))
-
             const newPos = oldPos.clone().add(dir)
             node.setPosition(newPos)
             
             const acceptable = this.isAcceptable(node)
             if (! acceptable) {
                 node.setPosition(oldPos)
+
+                dir.add(springRandom(node).multiplyScalar(random_speed))
                 //this.speed += .1
                 tries --
-                speed *= 2
+                dir.multiplyScalar(1.0005)
                 if (tries <= 0) done = true 
             }
             else {
