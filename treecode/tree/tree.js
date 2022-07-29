@@ -67,7 +67,7 @@ export class Tree {
     }
 
     seedCollider() {
-      var r = SEED_RING_OUTER_RADIUS*1.2 //TODO more science, this is a random number
+      var r = SEED_RING_OUTER_RADIUS //TODO add padding?
       this.root.colliderPolygon = circlePolygon(this.root.position, r, SEED_COLLIDER_SEGMENTS)
     }
 

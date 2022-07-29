@@ -37,8 +37,8 @@ export class Packer {
         if (this.speed <= 0.001) this.speed = 0
 
         // Pick random node
-        const i = Math.ceil(Math.random() * (this.nodes.length -1)) // exclude root
-        const node = this.nodes[i]
+        const i = Math.ceil(Math.random() * (this.nodes.length -2)) // exclude root and first child
+        const node = this.nodes[i+1]
 
         var done = false
         var tries = 2
