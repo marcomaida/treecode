@@ -7,11 +7,13 @@
     <script type="module" src="scenes.js"></script>
   </head>
   <body>
-    <div><h1>Treecode.</h1></div>
-    <div width="auto" id="canvasDiv"></div>
-    <div align="center" vertical_align="bottom">
-     <input type="text" id="inputText" name="inputText" 
-      maxlength="16" value="" placeholder="> write here <">
+    <div id="canvasDiv" style="z-index:1;position: absolute;"></div>
+    <div id="headerDiv" style="z-index:2;position: absolute;"><h1>Treecode.</h1></div>
+    <div id="footerDiv" style="z-index:2;position: absolute; bottom:0%;left:50%;
+                               transform: translate(-50%, -50%);" 
+                               align="center" vertical_align="bottom">
+      <input type="text" id="inputText" name="inputText" 
+             maxlength="16" value="" placeholder="> write here <">
     </div>
   </body>
 </html>

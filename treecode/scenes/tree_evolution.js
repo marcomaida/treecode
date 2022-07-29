@@ -12,17 +12,20 @@ import { TreeSpecs } from "../tree/tree_specs.js";
 //****** Setting up page */
 
 const canvasDiv = document.getElementById("canvasDiv")
+
 const inputTextBox = document.getElementById("inputText")
 inputTextBox.select()
 inputTextBox.focus()
 
-const canvasheight = window.innerHeight-170
+const canvasheight = window.innerHeight
 
 const app = new PIXI.Application({
+    antialias:true,
     width: window.innerWidth,
     height: canvasheight, // Todo do properly
-    resolution: 1
-})
+    resolution: 1,
+ })
+
 initDebug(app)
 
 canvasDiv.appendChild(app.view)
@@ -45,7 +48,7 @@ function updateTree() {
     var specs = new TreeSpecs()
 
     current_tree = bitsToTree(stream, specs)
-    current_tree.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, canvasheight/1.2))
+    current_tree.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, canvasheight*.75))
     set_layout(current_tree)
     current_tree.refresh_nodes(current_tree)
 
