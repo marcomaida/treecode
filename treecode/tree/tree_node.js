@@ -19,6 +19,7 @@ export class TreeNode {
 
       // Only used in the reingold_tilford algorithm
       this.x_mod = 0
+      this.pushForce = new PIXI.Vector(0,0)
     }
 
     // sets node position and updates all the mesh points
