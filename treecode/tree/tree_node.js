@@ -20,6 +20,7 @@ export class TreeNode {
       // Only used in the reingold_tilford algorithm
       this.x_mod = 0
       this.pushForce = new PIXI.Vector(0,0)
+      this.angleFromFather = 0
     }
 
     // sets node position and updates all the mesh points
@@ -29,10 +30,12 @@ export class TreeNode {
       const thickness = this.tree.specs.thicknessAt(this)
 
       // Setting this branch position
-      if (this.father !== null)
-      {
+      if (this.father !== null) {
         jointVertices(this.father.position, this.position, this.tree.specs.thicknessAt(this.father), this.vertices_start_left, this.vertices_start_right, this.tree.mesh)
         jointVertices(this.position, this.father.position, thickness, this.vertices_end_right, this.vertices_end_left, this.tree.mesh)
+
+        this.angleFromFather = (this.direction.angle(this.father.direction.multiplyScalar(-1)) 
+                                + 2*Math.PI) % (2*Math.PI)
       }
       else
         jointVertices(this.position, new PIXI.Vector(0,0), thickness, this.vertices_end_right, this.vertices_end_left, this.tree.mesh)

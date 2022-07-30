@@ -57,7 +57,7 @@ export class Packer {
         dir.multiplyScalar(speed)
 
         var done = false
-        var tries = 3
+        var tries = 4
         var random_speed = dir.length()
         while (! done) {
             const oldPos = node.position.clone()
@@ -65,15 +65,16 @@ export class Packer {
             node.setPosition(newPos)
             
             const tooShort = this.isTooShort(node)
+            const orderViolated = this.hasViolatedOrder(node)
             var colliding = false
-            if(!tooShort) {
+            if(!tooShort && !orderViolated) {
                 const collision = checkTreeAreaCollision(node)
                 if (collision !== null) {
                     colliding = true
                     collision.pushForce.add(dir)
                 }
             }
-            if (tooShort || colliding) {
+            if (tooShort || colliding || orderViolated) {
                 node.setPosition(oldPos)
 
                 dir.add(springRandom(node).multiplyScalar(random_speed))
@@ -107,5 +108,18 @@ export class Packer {
         }
         
         return tooShort
+    }
+
+    hasViolatedOrder(node) {
+        if (node.father !== null) {
+            const cs = node.father.children
+
+            for (var i = 1; i < cs.length; i++) {
+                if (!cs[i-1].angleFromFather > cs[i].angleFromFather)
+                    return true
+            }
+        }
+
+        return false
     }
 }
