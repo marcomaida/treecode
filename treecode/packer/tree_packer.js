@@ -1,6 +1,6 @@
 import { clearDebug, drawDebugArrow } from "../drawing/debug.js"
 import { springNeighborsDistance, springNeighborsAngle, springRandom, springNeighborsAngleSpine, springNeighborsSeed } from "./springs.js"
-import { isBranchAreaIntersectingTree } from "./tree_collision.js"
+import { checkTreeAreaCollision } from "./tree_collision.js"
 
 export class Packer {
     constructor(tree) {
@@ -96,6 +96,6 @@ export class Packer {
             tooShort = node.position.distanceTo(c.position) < node.tree.specs.min_branch_length
         }
         
-        return !tooShort && !isBranchAreaIntersectingTree(node)
+        return !tooShort && checkTreeAreaCollision(node) === null
     }
 }

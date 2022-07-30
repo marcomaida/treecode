@@ -6,7 +6,6 @@ import { set_layout } from "../tree/tree_layout.js";
 import { Packer } from "../packer/tree_packer.js"
 import { clearDebug, drawDebugCircle, drawDebugPolygon, initDebug } from "../drawing/debug.js"
 import { treeIterator } from "../tree/tree.js"
-import { isBranchIntersectingTree } from "../packer/tree_collision.js";
 import { TreeSpecs } from "../tree/tree_specs.js";
 
 //****** Setting up page */

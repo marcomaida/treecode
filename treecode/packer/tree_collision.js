@@ -1,33 +1,35 @@
 import { doPolygonsIntersect } from "../geometry/geometry.js"
 
-export function isBranchAreaIntersectingTree(node) {
-    if (isBranchIntersectingSubtree(node, node.tree.root))
-        return true
+export function checkTreeAreaCollision(node) {
+    var collision = checkSubtreeCollision(node, node.tree.root)
+    if (collision !== null)
+        return collision
 
     for (const c of node.children) {
-        if (isBranchIntersectingSubtree(c, node.tree.root))
-        return true
+        collision = checkSubtreeCollision(c, node.tree.root)
+        if (collision !== null) return collision
     }
 
-    return false
+    return null
 }
 
-export function isBranchIntersectingTree(node) {
-    return isBranchIntersectingSubtree(node, node.tree.root)
+export function checkTreeCollision(node) {
+    return checkSubtreeCollision(node, node.tree.root)
 }
 
-function isBranchIntersectingSubtree(node, curr_node) {
+function checkSubtreeCollision(node, curr_node) {
     if (node !== curr_node) {
         if (areBranchesIntersecting(node, curr_node))
-            return true
+            return curr_node
     }
 
     for (const c of curr_node.children) {
-        if (isBranchIntersectingSubtree(node, c))
-            return true
+        const collision = checkSubtreeCollision(node, c)
+        if (collision !== null)
+            return collision
     }
 
-    return false
+    return null
 }
 
 function areBranchesIntersecting(nodea, nodeb) {
