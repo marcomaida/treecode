@@ -16,14 +16,15 @@ const inputTextBox = document.getElementById("inputText")
 inputTextBox.select()
 inputTextBox.focus()
 
-const canvasheight = window.innerHeight
+var window_width = window.innerWidth
+var window_height = window.innerHeight
 
 const app = new PIXI.Application({
-    antialias:true,
-    width: window.innerWidth,
-    height: canvasheight, // Todo do properly
+    antialias: true,
+    width: window_width,
+    height: window_height,
     resolution: 1,
- })
+})
 
 initDebug(app)
 
@@ -47,7 +48,7 @@ function updateTree() {
     var specs = new TreeSpecs()
 
     current_tree = bitsToTree(stream, specs)
-    current_tree.initializeMesh(app, new PIXI.Vector(window.innerWidth/2, canvasheight*.75))
+    current_tree.initializeMesh(app, new PIXI.Vector(window_width/2, window_height*.75))
     set_layout(current_tree)
     current_tree.refresh_nodes(current_tree)
 
@@ -60,4 +61,10 @@ function updateTree() {
 }
 
 updateTree()
-inputTextBox.addEventListener('input', updateTree);
+
+inputTextBox.addEventListener('input', updateTree)
+window.onresize = function() {
+    window_width = window.innerWidth
+    window_height = window.innerHeight
+    current_tree.setMeshPos(new PIXI.Vector(window_width/2, window_height*.75))
+}

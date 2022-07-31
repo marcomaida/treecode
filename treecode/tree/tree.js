@@ -62,6 +62,15 @@ export class Tree {
       for (const c of node.children) this._refresh_nodes(c)
     }
 
+    moveMeshPos(vec) {
+      vec.add(new PIXI.Vector(this.pixiMesh.position.x, this.pixiMesh.position.y))
+      this.pixiMesh.position.set(vec.x, vec.y)
+    }
+
+    setMeshPos(pos) {
+      this.pixiMesh.position.set(pos.x, pos.y)
+    }
+
     destroyMesh(app) {
       app.stage.removeChild(this.pixiMesh)
     }
