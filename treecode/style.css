@@ -20,6 +20,7 @@ html, body {
 
 h1 {
     font-family: Helvetica, sans-serif;
+    font-size: 26pt;
     margin-left: 12%;
     background-color:rgba(0, 0, 0, 0);
     color:white;
@@ -27,11 +28,8 @@ h1 {
 
 .questionmark {
     font-family: Helvetica, sans-serif;
-    font-size: 20pt;
-    margin-left: 92%;
-    margin-top: 2.1%;
-    background-color:rgba(0, 0, 0, 0);
-    color:white;
+    margin-left: 91%;
+    margin-top: 2.8%;
 }
 
 a {
@@ -52,6 +50,11 @@ a {
 
 .clip-circle {
     width: 100%;
+    clip-path: circle(40%);
+}
+
+.clip-circle-small {
+    width: 15%;
     clip-path: circle(40%);
 }
 
@@ -79,6 +82,16 @@ a {
         'image desc';
     grid-template-columns: 90px auto auto;
     grid-template-rows: auto auto auto;
+    margin-top: 10pt;
+    margin-left: 10pt;
+}
+
+.grid-container-simple {
+    display: grid;
+    grid-gap: 1px 1px;
+    grid-template-areas:
+        'image header';
+    grid-template-columns: 90px auto;
     margin-top: 10pt;
     margin-left: 10pt;
 }
