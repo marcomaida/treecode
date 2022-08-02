@@ -10,7 +10,6 @@ export class Packer {
       this.initial_speed = 1+(Math.pow(1-(1/this.nodes.length),100))*20
       this.speed = this.initial_speed
       this.decay = .99+(Math.pow(1-(1/this.nodes.length),2))*.00999999
-      console.log(this.decay)
     }
 
     init(node) {
@@ -35,7 +34,7 @@ export class Packer {
         // Pick speed
         if (this.speed <= 0)
             return
-        
+
         var speed = this.speed
         const bl = node.position.distanceTo(node.father.position)
         if (bl < node.tree.specs.lengthAt(node)*1.4) {
@@ -71,7 +70,7 @@ export class Packer {
             const oldPos = node.position.clone()
             const newPos = oldPos.clone().add(dir)
             node.setPosition(newPos)
-            
+
             const tooShort = this.isTooShort(node)
             const orderViolated = this.hasViolatedOrder(node)
             var colliding = false
@@ -89,7 +88,7 @@ export class Packer {
                 //this.speed += .1
                 tries --
                 dir.multiplyScalar(1.0005)
-                if (tries <= 0) done = true 
+                if (tries <= 0) done = true
             }
             else {
                 done = true
@@ -97,7 +96,7 @@ export class Packer {
 
             // clearDebug()
             // var color = (acceptable ? 0x22AA22 : 0xAA2222)
-            // drawDebugArrow(node.tree.transformPosition(node.position.clone()), 
+            // drawDebugArrow(node.tree.transformPosition(node.position.clone()),
             //                node.tree.transformPosition(node.position.clone()).add(dir.clone().multiplyScalar(10)),
             //               3, color)
         }
@@ -109,12 +108,12 @@ export class Packer {
             tooShort = node.position.distanceTo(node.father.position) < node.tree.specs.min_branch_length
 
         for (const c of node.children) {
-            if (tooShort) 
+            if (tooShort)
                 break
-                
+
             tooShort = node.position.distanceTo(c.position) < node.tree.specs.min_branch_length
         }
-        
+
         return tooShort
     }
 

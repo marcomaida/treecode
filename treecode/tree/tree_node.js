@@ -34,7 +34,7 @@ export class TreeNode {
         jointVertices(this.father.position, this.position, this.tree.specs.thicknessAt(this.father), this.vertices_start_left, this.vertices_start_right, this.tree.mesh)
         jointVertices(this.position, this.father.position, thickness, this.vertices_end_right, this.vertices_end_left, this.tree.mesh)
 
-        this.angleFromFather = (this.direction.angle(this.father.direction.multiplyScalar(-1)) 
+        this.angleFromFather = (this.direction.angle(this.father.direction.multiplyScalar(-1))
                                 + 2*Math.PI) % (2*Math.PI)
       }
       else
@@ -157,4 +157,25 @@ export class TreeNode {
       for (const c of this.children)
         c.getContour(is_left, contour_map, modsum+this.x_mod, depth+1)
     }
+
+    getPosExtremes() {
+      return getPosExtremes_(this)
+    }
   }
+
+// Extremes are [[min_x, max_x],[min_y, max_y]]
+function getPosExtremes_(node, curr_extremes=[[Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER], [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER]]) {
+  curr_extremes = [
+    [Math.min(curr_extremes[0][0], node.position.x), Math.max(curr_extremes[0][1], node.position.x)],
+    [Math.min(curr_extremes[1][0], node.position.y), Math.max(curr_extremes[1][1], node.position.y)]
+  ]
+  for (const c of node.children) {
+    let child_extremes = getPosExtremes_(c, curr_extremes)
+    curr_extremes = [
+      [Math.min(curr_extremes[0][0], child_extremes[0][0]), Math.max(curr_extremes[0][1], child_extremes[0][1])],
+      [Math.min(curr_extremes[1][0], child_extremes[1][0]), Math.max(curr_extremes[1][1], child_extremes[1][1])]
+    ]
+  }
+
+  return curr_extremes
+}

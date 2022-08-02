@@ -13,7 +13,7 @@ function reingold_tilford(root) {
     set_initial_pos(root)
     add_x_mod(root)
     center_root(root)
-    // squareify_tree() // TODO
+    squareify_tree(root)
 }
 
 function set_initial_pos(node, depth=0) {
@@ -104,21 +104,43 @@ function resolve_conflicts(node) {
 }
 
 function add_x_mod(node, modsum=0) {
-    node.position.add(new PIXI.Vector(modsum, 0))
+    node.setPosition(node.position.clone().add(new PIXI.Vector(modsum, 0)))
 
     for (const c of node.children)
         add_x_mod(c, modsum + node.x_mod)
 }
 
 function center_root(root) {
-    shift_tree(root, -root.position.x)
+    shift_tree_x(root, -root.position.x)
 }
 
-function shift_tree(node, x_offset) {
-    node.position.add(new PIXI.Vector(x_offset, 0))
+function shift_tree_x(node, x_offset) {
+    node.setPosition(node.position.clone().add(new PIXI.Vector(x_offset, 0)))
 
     for (const c of node.children)
-        shift_tree(c, x_offset)
+        shift_tree_x(c, x_offset)
+}
+
+function stretch_tree_y(node, mult) {
+    node.setPosition(new PIXI.Vector(node.position.x, node.position.y*mult))
+
+    for (const c of node.children)
+        stretch_tree_y(c, mult)
+}
+
+// Squareifies only if tree is more wide than deep
+function squareify_tree(root) {
+    let [[min_x, max_x], [min_y, max_y]] = root.getPosExtremes()
+    let width = max_x - min_x
+    let height = max_y - min_y
+    if (width > height) {
+        let new_height = width
+        let multiplier = new_height/height
+        stretch_tree_y(root, multiplier)
+        // Don't stretch the root node!
+        // for (const c of root.children[0].children)
+        //     stretch_tree_y(c, multiplier)
+    }
 }
 
 // Old pre-order visit
