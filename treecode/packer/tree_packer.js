@@ -6,10 +6,11 @@ export class Packer {
     constructor(tree) {
       this.tree = tree
       this.nodes = []
-      this.initial_speed = 5
-      this.speed = this.initial_speed
-      this.decay = .999998
       this.init(tree.root)
+      this.initial_speed = 1+(Math.pow(1-(1/this.nodes.length),100))*20
+      this.speed = this.initial_speed
+      this.decay = .99+(Math.pow(1-(1/this.nodes.length),2))*.00999999
+      console.log(this.decay)
     }
 
     init(node) {
@@ -27,18 +28,25 @@ export class Packer {
     }
 
     tick() {
+        // Pick random node
+        const i = Math.ceil(Math.random() * (this.nodes.length -2)) // exclude root and first child
+        const node = this.nodes[i+1]
 
         // Pick speed
         if (this.speed <= 0)
             return
         
         var speed = this.speed
-        this.speed *= this.decay
-        if (this.speed <= 0.001) this.speed = 0
-
-        // Pick random node
-        const i = Math.ceil(Math.random() * (this.nodes.length -2)) // exclude root and first child
-        const node = this.nodes[i+1]
+        const bl = node.position.distanceTo(node.father.position)
+        if (bl < node.tree.specs.lengthAt(node)*1.4) {
+            this.speed *= this.decay
+            if (this.speed <= 0.001) this.speed = 0
+        }
+        else {
+            this.speed *= 1/this.decay
+            if (this.speed > this.initial_speed)
+                this.speed = this.initial_speed
+        }
 
         // Determine direction (no random)
 
@@ -57,7 +65,7 @@ export class Packer {
         dir.multiplyScalar(speed)
 
         var done = false
-        var tries = 4
+        var tries = 3
         var random_speed = dir.length()
         while (! done) {
             const oldPos = node.position.clone()
