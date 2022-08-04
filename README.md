@@ -1,6 +1,6 @@
 # Treecodes
 
-Like QR codes, but with trees!
+Like QR codes, but with trees! Visit the [demo website](www.maida.me/treecode).
 
 ## Quick start
 
