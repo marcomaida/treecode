@@ -4,8 +4,8 @@ export class TreeSpecs {
         this.min_thickness = 2
         this.min_branch_length = 12
         this.max_branch_length = 20
-        this.branch_length = 30 // used by initial layout //TODO remove
-        this.colliderCoating = 1.2 
+        this.initial_branch_length = 25 // used by initial layout //TODO remove
+        this.colliderCoating = 1.2
         this.branchAngleSpan = Math.PI/2
     }
 

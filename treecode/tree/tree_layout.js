@@ -20,7 +20,7 @@ function set_initial_pos(node, depth=0) {
     for (const c of node.children)
         set_initial_pos(c, depth+1)
 
-    const tree_spacing = node.tree.specs.branch_length
+    const tree_spacing = node.tree.specs.initial_branch_length
     let x_pos = null
     if (node.isLeaf()) {
         if (node.isLeftmostSibling()) {
@@ -60,7 +60,7 @@ function set_initial_pos(node, depth=0) {
 function resolve_conflicts(node) {
     if (node.isLeaf() || node.isLeftmostSibling())
         return
-    const tree_spacing = node.tree.specs.branch_length
+    const tree_spacing = node.tree.specs.initial_branch_length
 
     // Iterate over all nodes between this node and the leftmost sibling
     let node_contour = node.getLeftContour()
@@ -136,10 +136,9 @@ function squareify_tree(root) {
     if (width > height) {
         let new_height = width
         let multiplier = new_height/height
-        stretch_tree_y(root, multiplier)
         // Don't stretch the root node!
-        // for (const c of root.children[0].children)
-        //     stretch_tree_y(c, multiplier)
+        for (const c of root.children[0].children)
+            stretch_tree_y(c, multiplier)
     }
 }
 
@@ -149,7 +148,7 @@ function wetherell_shannon(node, per_layer=[], depth=0) {
     if (depth > 0) {
         // Go down one level in depth and left
         start_point = per_layer[depth-1].clone()
-                                        .add(new PIXI.Vector(-node.tree.specs.branch_length, -node.tree.specs.branch_length))
+                                        .add(new PIXI.Vector(-node.tree.specs.initial_branch_length, -node.tree.specs.initial_branch_length))
     }
     else
         start_point = new PIXI.Vector(0, 0)
@@ -163,5 +162,5 @@ function wetherell_shannon(node, per_layer=[], depth=0) {
         wetherell_shannon(c, per_layer, depth+1)
 
     // Go right on the same layer
-    per_layer[depth].add(new PIXI.Vector(node.tree.specs.branch_length, 0))
+    per_layer[depth].add(new PIXI.Vector(node.tree.specs.initial_branch_length, 0))
 }

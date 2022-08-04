@@ -106,14 +106,14 @@ function areBranchesIntersecting(nodea, nodeb) {
         // base case, no relationship between nodes
         // console.log("##################")
         // console.log("NODEA")
+        // console.log(nodea.label)
         // console.log(nodea.colliderPolygon)
         // console.log(nodea.numDescendants)
-        // console.log(nodea)
         // console.log(nodea.father)
         // console.log("NODEB")
+        // console.log(nodeb.label)
         // console.log(nodeb.colliderPolygon)
         // console.log(nodeb.numDescendants)
-        // console.log(nodeb)
         // console.log(nodeb.father)
 
         return doPolygonsIntersect(nodea.colliderPolygon, nodeb.colliderPolygon)
