@@ -2,7 +2,7 @@ import {bitsToTree} from "../conversion/converter.js"
 import {BitStreamText} from "../conversion/bit_stream.js"
 import {} from "../geometry/vector.js"
 import {} from "../geometry/math.js"
-// import { set_layout } from "../tree/tree_layout.js";
+import { set_layout } from "../tree/tree_grid.js";
 // import { grid } from "../tree/tree_layout.js";
 import { Packer } from "../packer/tree_packer.js"
 import { clearDebug, drawDebugCircle, drawDebugPolygon, initDebug } from "../drawing/debug.js"

@@ -6,17 +6,19 @@ function create_grid(size) {
 }
 
 export function set_layout(tree) {
-    const grid_size = tree.root.num_descendants
+    const grid_size = tree.root.numDescendants
     let grid = create_grid(grid_size)
     
-    const start_pos_x = grid_size/2
-    const start_pos_y = grid_size/2
-    grid_placement(tree.root, grid, -1, -1, start_pos_x, start_pos_y)
+    const start_pos_x = Math.floor(grid_size/2)
+    const start_pos_y = Math.floor(grid_size/2)
+    const res = grid_placement(tree.root, grid, -1, -1, start_pos_x, start_pos_y)
+    
+    console.assert(res.length > 0) // TODO replace with error
 }
 
 function is_free(grid, x, y) {
     if (x < 0 || y < 0) { return false } 
-    if (x > grid.length() || y < 0) { return false } 
+    if (x > grid.length || y < 0) { return false } 
     return grid[x][y] === null;
 }
 
@@ -44,6 +46,14 @@ function get_clockwise_free_cells(node, grid, father_x, father_y, pos_x, pos_y) 
     return urdl.filter(p => is_free(grid, p[0], p[1]))
 }
 
+
+function* all_possible_placements(num_children, clockwise_free_cells) {
+    console.assert(num_children <= clockwise_free_cells)
+    
+    // TODO enumerate all alternatives, currently just cuts
+    yield clockwise_free_cells.slice(0,num_children)
+}
+
 /**
  *        x
  *    ---------> 
@@ -63,27 +73,58 @@ function grid_placement(node, grid, father_x, father_y, pos_x, pos_y) {
     grid[pos_x][pos_y] = node
 
     // Leaves immediately succeed
-    if (node.isLeaf()) { return true }
+    if (node.isLeaf()) { return [[pos_x, pos_y]] }
 
-    const num_children = node.children.length()
     let clockwise_free_cells = get_clockwise_free_cells(node, grid, father_x, father_y, pos_x, pos_y)
 
     // No free cells: dead end. Backtrack.
-    if (clockwise_free_cells.length() === 0) {
+    if (clockwise_free_cells.length === 0) {
         grid[pos_x][pos_y] = null
-        return false
+        return []
     }
-    
-    // There might exist a solution, explore.
-    // (have to maintain topology of tree w.r.t. parent)
+
     /**
-     * MUST distinguish between SPROUT (grow children)
+     * Must distinguish between SPROUT (grow children)
      * and GROW (elongate branch to explore)
      * SPROUT is preferable, GROW only in case there is no other solution.
      */
 
-    // TODO recursive case, sprout
-    // for (const c of node.children)
-    //     grid_placement(c, grid, pos_x, pos_y, XXX, YYY)
+    const num_children = node.children.length
+    if (num_children <= clockwise_free_cells.length) {
+        /* SPROUT
+         * (There are enough free cells, try to place children)
+         */
 
+        for (const placement in all_possible_placements(num_children, clockwise_free_cells)) {
+            console.log(placement.length == num_children)
+            let covered_children = []
+            let success = true
+            for (const [i, c] of node.children.entries()) {
+                const covered = grid_placement(c, grid, pos_x, pos_y, placement[i][0], placement[i][1])
+                if (covered.length == 0) {
+                    success = false
+                    break
+                }
+                else { covered_children = covered_children.concat(covered) }
+            }
+
+            if (success) { return covered_children }
+            else { 
+                /* failed, must clean all covered cells */ 
+                for (cell of covered_children) { grid[cell[0]][cell[1]] = null }
+            }   
+        }
+    }
+
+    /* GROW
+     * (Sprout failed, but there is at least one free cell) 
+     */
+    for (const grow_cell of clockwise_free_cells) {
+        const covered = grid_placement(node, grid, pos_x, pos_y, grow_cell[0], grow_cell[1]);
+        if (covered.length > 0) { return covered }
+    }
+
+    // Grow failed, backtrack
+    grid[pos_x][pos_y] = false
+    return []
 }
