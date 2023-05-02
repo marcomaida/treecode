@@ -14,8 +14,10 @@ export class Tree {
       this.seedPosition = null
       this.pixiMesh = null
       this.buffer = null
+      
+      this.maxDepth = 0
 
-      this.initialize_nodes(this.root, "X")
+      this.initialize_nodes(this.root, "X", 0)
     }
 
     /**
@@ -23,16 +25,18 @@ export class Tree {
      * are helpers (label, num descendants, tree)
      * Including the node itself, i.e., a leaf node has 1 descendant
      * */
-    initialize_nodes(node, prefix) {
+    initialize_nodes(node, prefix, depth) {
       node.label = prefix
       var num = 1
 
       for (const [i, c] of node.children.entries()) {
-        this.initialize_nodes(c, prefix + i.toString())
+        this.initialize_nodes(c, prefix + i.toString(), depth+1)
         num += c.numDescendants
       }
       node.numDescendants = num
       node.tree = this
+
+      this.maxDepth = Math.max(this.maxDepth, depth)
     }
 
     initializeMesh(app, position) {
