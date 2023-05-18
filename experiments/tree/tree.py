@@ -77,3 +77,24 @@ def iterate_tree_depth_first(node):
 		for c in node.children:
 			for n in iterate_tree_depth_first(c):
 				yield n
+
+# Wraps the node in n layers of nodes
+def wrap(node, layers):
+	for _ in range(layers):
+		node = TreeNode([node])
+	
+	return node
+
+# Check if the two trees are topologically equivalent.
+def equal(tree1,tree2):
+	frontier = [(tree1, tree2)]
+
+	while len(frontier) > 0:
+		n1, n2 = frontier.pop(0)
+		
+		if (len(n1.children) != len(n2.children)):
+			return False
+		else:
+			frontier.extend(list(zip(n1.children, n2.children)))
+
+	return True
