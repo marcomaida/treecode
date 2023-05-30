@@ -36,18 +36,25 @@ export function bitsToTree(stream, specs) {
  * Encode child ordering in topology
  */
 export function wrap_tree(parent_node) {
-    // TODO
-    // needs_ord = not all([tree.tree.equal(node.children[i - 1], node.children[i]) 
-    //                      for i in range(1, len(node.children))])
+    var needs_ord = false
+
+    for (var i = 1; i < parent_node.children.length; i++) {
+        if (!parent_node.children[i - 1].tree_eq(parent_node.children[i])) {
+            needs_ord = true
+            break
+        }
+    }
 
     for (const [i, c] of parent_node.children.entries()) {
         wrap_tree(c)
 
-        var wrap_node = c
-        for (var w = 0; w < i; w++) {
-            parent_node.children[i] = new TreeNode(parent_node, [wrap_node])
-            wrap_node.parent_node = parent_node.children[i]
-            wrap_node = parent_node.children[i]
+        if (needs_ord) {
+            var wrap_node = c
+            for (var w = 0; w < i; w++) {
+                parent_node.children[i] = new TreeNode(parent_node, [wrap_node])
+                wrap_node.parent_node = parent_node.children[i]
+                wrap_node = parent_node.children[i]
+            }
         }
     }
 }
